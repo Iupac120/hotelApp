@@ -1,4 +1,4 @@
 export default {
-    port: 5000,
-    dbUri:''
+    port: process.env.PORT,
+    dbUri:process.env.MONGOOSEURL
 };
