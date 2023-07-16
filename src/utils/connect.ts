@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 import config from 'config';
+import logger from "./logger"
 
-function connect(){
+async function connect(){
     const dbUri = config.get<string>('dbUri');
-    return mongoose.connect(dbUri,{
-        useNewUrlParser:true,
-        useUnifiedTopoloy:true
-    }).then(() => {
-        console.log('connected to db')
-    }).catch((err) =>{
-        console.error('could not connected to db')
-    })
+    try {
+        await  mongoose.connect(dbUri)
+            logger.info('connected to db')
+    } catch (error) {
+        logger.error('could not connected to db')
+        process.exit(1)  
+    }
 }
 
 export default connect
