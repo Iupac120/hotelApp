@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from 'config';
 import e from 'express';
+
+
 //typescript definition of user model
 export interface UserDocument extends mongoose.Document {
     email:string;
@@ -37,6 +39,6 @@ userSchema.methods.comparePassword = async function (candiadtePasword:string):Pr
     return bcrypt.compare(candiadtePasword,user.password).catch((e)=>e.false)
 }
 
-const UserModel =  mongoose.model("User",userSchema)
+const UserModel =  mongoose.model<UserDocument>("User",userSchema)
 
 export default UserModel;
