@@ -7,11 +7,11 @@ import { createUserInput } from '../schema/user.schema';
 export async function createUserHandler(req:Request<{},{},createUserInput["body"]>,res:Response){
     try {
         const user =  await createUser(req.body);//call service
-        return res.send(omit(user.toJSON(),"password"));//omit the user to json object
+        return res.send(omit(user,"password"));//omit the user to json object
     } catch (e:any) {
         logger.error(e)
+        console.log(e)
         return res.status(409).send(e.message)
     }
 }
 
-export default createUserHandler

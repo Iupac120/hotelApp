@@ -3,12 +3,14 @@ import bcrypt from 'bcrypt';
 import config from 'config';
 import e from 'express';
 
-
-//typescript definition of user model
-export interface UserDocument extends mongoose.Document {
+//resolving Omit
+export interface UserInput {
     email:string;
     name:string;
     password:string;
+}
+//typescript definition of user model
+export interface UserDocument extends UserInput, mongoose.Document {
     createdAt:Date;
     updatedAt:Date;
     comparePassword(candiadtePasword:string):Promise<Boolean>
