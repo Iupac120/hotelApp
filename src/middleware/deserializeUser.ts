@@ -14,7 +14,7 @@ const deserializeUser = async (req:Request,res:Response,next:NextFunction) => {
     const {decoded, expired} = verifyJwt(accessToken)
 
     if(decoded){
-        res.locals.user = decoded //assigns locals to users
+        res.locals.user = decoded //assigns decoded to req.locals.user
         return next()
     }
 

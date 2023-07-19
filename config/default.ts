@@ -2,12 +2,48 @@ import dotenv from 'dotenv'
 import config from "config"
 dotenv.config()
 
-export default {
-    port:process.env.PORT,
-    dbUri:process.env.MONGOSEURL,
-    saltWorkFactor:process.env.SALT,
-    accessTokenTtl:process.env.ACCESSMAXAGE,
-    refreshTokenTtl:process.env.REFRESHMAXAGE,
-    publicKey:process.env.PUBLICKEY,
-    privateKey:process.env.PRIVATEKEY
+export default {   
+    dbUri:'mongodb+srv://Iupac120:3196@cluster0.dqfoaxw.mongodb.net/Hotel?retryWrites=true&w=majority',
+    port:5000,
+    saltWorkFactor:10,
+    accessTokenTtl:'15m',
+    refreshTokenTtl:'1y',
+    privateKey:`-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAruWOcGJQEfKkNMdVUiH1Pf4pkzwoHE1ybP36GYsW11poji91
+uGVKJxcYHH0CIg8pufefQQ2Xe/0Xgg9JqtLa98YFyAvkePk6JR7y3eLso1RofpKs
+RgsQh1kka3a07ZKcDyu65ll8EoZyaabYwAx+NC+NlSQjaH1ZhP718lz96VJObbBQ
+ZYpuhx5Wt7oxaez5zHJOdZnR81kDfb/Uu65L8mUkp5MHJFoUzYyfHgADZLtqTtq/
+DRizbQe6tK93ZPRr5osY4ZR+tzCTBn8iExWEm5r20bPQS/sjZOmQSm+1H40oRj/b
+3NIUHfYjJ1429mvsVzNheKKi4PwOG8V8hn01KQIDAQABAoIBAFHhUtA2lrnwWQQE
+lmM/VqtRRHGT5ktpzrpMJTy0K1tjDjQS8BAGC7NFUppzw/3iD2zrCvnPvS3lDY5s
+TdbVpIH/iVFgj/Q66gfa92T+Cj9lEw6+6DxajcBv8WcGSio3SyynEncpSbb6jrH7
+1NoEf0k7QhOiuZj/pltnagmvk4gZpE3/DWMrHxmsodbg+blWBy+Zwx4IXIUe6pnh
+DwMh8JE9fJegQ+XIGMiYZLphHq6624D+6iMbGoK4MkIotodIyvcoUSzrMhsJbZBN
+Kv0JDsKhq3CQvgtF8sW3ftP6Bo0UWSENl2dwuhL3kDI7E5g5jvdncFoDLBj8Z2d/
+51uhOIkCgYEA1htOy2St3zVgNrPhkYTFEXtVd6uogE6+jPoJnb+wISxOswGyMm4u
+/YbRltQ/+4mNqzvKv4E7YYviQJa2CUxhJR+Y5ltLX+0/M54v7ZC9VCF+6J6Xa8g/
+1XYPU/RJeXY3O5xLNNkTdfG86VSblTDk4kcaxWlMwXNduh3UyN0DeOcCgYEA0R40
+gJiYUrzcWY6T4nEH7iTRDlNvCVdYiKFZ7TEEZNo6kseYnLmsNmz8GhH/xHDRUD0T
+4H24U8iG1ty4BtoFLpS5KEjword9l1Qx8QYj9bT2TuT2dRF5RbnElnPP8EaSmQg3
+XUxVUzMAaZ4RXTWSuifwXKLSZn3RUj2XZp7fz28CgYAj2tjcKNURPyAIqSEKPIDA
+B7ZtXvrN2eIBO9Imb7ZwJ7paMduEpH0MCerJZmv8lLF7znyKi3rFQCa4iESd1AOk
+suDpGrrJqrJd04zVLNr33tAg5oYXD6bY+XdhqNQxGgHv4qGZjQy8QKpRLNENL+30
+ktHB43tuHgLBK0O6C4EMWwKBgCg20cvlDG3kyc8jHwdNy0OdquJBYzn9pRXpSXzW
+j0zBtr/hSFTjU93HiZeN3IyvUWFHzZm/M4JRLrUFDxKqPJLfoNfBZx0zgiBm3Y/H
+KYUnvrIfT9HlgVfKSKbSMKu5NpndPaBgfIwaY7rr3dT553SLF6sI2MNC8M0K8SGX
+7dxbAoGBAJGhW0SXYUe6+aXRlfcIEJj3Be4TXebI8/WKdik9mlO/mjcvAuOTZ/U7
+gERlhkVm1FA8+jzpVQRhWGCfz8iSjXI45a5U8ZwhcYtsrDyKsvZUEggbS/czJRRf
+c08LNJ2leg/sATFV7FxHEE+hPP9ddjs74OW1Nfn30LXX57f4SJGe
+-----END RSA PRIVATE KEY-----`,
+
+    publicKey:`-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAruWOcGJQEfKkNMdVUiH1
+Pf4pkzwoHE1ybP36GYsW11poji91uGVKJxcYHH0CIg8pufefQQ2Xe/0Xgg9JqtLa
+98YFyAvkePk6JR7y3eLso1RofpKsRgsQh1kka3a07ZKcDyu65ll8EoZyaabYwAx+
+NC+NlSQjaH1ZhP718lz96VJObbBQZYpuhx5Wt7oxaez5zHJOdZnR81kDfb/Uu65L
+8mUkp5MHJFoUzYyfHgADZLtqTtq/DRizbQe6tK93ZPRr5osY4ZR+tzCTBn8iExWE
+m5r20bPQS/sjZOmQSm+1H40oRj/b3NIUHfYjJ1429mvsVzNheKKi4PwOG8V8hn01
+KQIDAQAB
+-----END PUBLIC KEY-----`
+
 };

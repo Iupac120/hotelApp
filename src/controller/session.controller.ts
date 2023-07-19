@@ -18,7 +18,7 @@ export async function createUserSesionHandler (req:Request,res:Response){
     console.log("seesion",session)
     console.log("user",user)
     console.log("agent",userAgent)
-    const accesToken = signJwt({user,session:session._id},{
+    const accessToken = signJwt({user,session:session._id},{
         expiresIn:config.get("accessTokenTtl")
     })
     console.log("one")
@@ -28,7 +28,7 @@ export async function createUserSesionHandler (req:Request,res:Response){
     })
     //return a refresh and acesss token
 
-    return res.send({accesToken,refreshToken}) 
+    return res.send({accessToken,refreshToken}) 
     }catch(e:any){
         console.log("error",e)
         res.status(500).json(e.message)
