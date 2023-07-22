@@ -1,5 +1,5 @@
 import {Express,Request,Response} from 'express';
-import {createUserHandler} from "./controller/user.controller";
+import {createUserHandler, getUserHandler} from "./controller/user.controller";
 import validateResource from './middleware/validateResources';
 import { createUserSchema } from './schema/user.schema';
 import { createUserSesionHandler, deleteUserSessionHandler, getUserSesionHandler } from './controller/session.controller';
@@ -11,10 +11,15 @@ import { createProductSchema, deleteProductSchema, getProductSchema, updateProdu
 
 function routes(app:Express){
     app.get("/",(req:Request,res:Response) => {
-        res.sendStatus(200)
+        res.send("This is hotel booking app")
     })
-    //user routes
+    //auth routes
+    app.post("/api/auth")
+    //users routes
     app.post("/api/users",validateResource(createUserSchema),createUserHandler)
+    app.get("/api/users",requireUser,getUserHandler)
+    //hotels routes
+    app.post("/auth/hotel")
     //sesion routes
     app.post("/api/sessions",validateResource(createSessionSchema),createUserSesionHandler)
     app.get("/api/sessions",requireUser,getUserSesionHandler)

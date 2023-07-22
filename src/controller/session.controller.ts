@@ -26,6 +26,23 @@ export async function createUserSesionHandler (req:Request,res:Response){
     const refreshToken = signJwt({user,session:session._id},{
         expiresIn:config.get("refreshTokenTtl")
     })
+
+    //store access and refresh token in cookie
+    res.cookie("accessToken",accessToken,{
+        httpOnly: true,
+        domain:config.get("localhost"),
+        path:config.get("path"),
+        sameSite: "strict", 
+        secure: false,//production is true 
+        maxAge:900000})//15mins
+
+        res.cookie("refreshToken",refreshToken,{
+        httpOnly: true,
+        domain:config.get("localhost"),
+        path:config.get("path"),
+        sameSite: "strict", 
+        secure: false,//production is true 
+        maxAge:900000})//15mins
     //return a refresh and acesss token
 
     return res.send({accessToken,refreshToken}) 
@@ -36,14 +53,17 @@ export async function createUserSesionHandler (req:Request,res:Response){
 }
 
 export async function getUserSesionHandler(req:Request,res:Response){
-    const userId = res.locals.user._id
+    console.log(res.locals.user.user._id)
+    const userId = res.locals.user.user._id
     console.log("user",userId)
     const sessions = await findSessions({user:userId,valid:true})
     return res.send(sessions)
 }
 
+
 export async function deleteUserSessionHandler(req:Request,res:Response){
     const sessionId = res.locals.user.session
+    console.log("delete",sessionId)
     await updateSession({_id:sessionId},{valid:false})
     return res.send({
         accessToken: null,
