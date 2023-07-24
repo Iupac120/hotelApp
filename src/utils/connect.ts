@@ -18,9 +18,7 @@ import config from "config"
 
 
 
-async function pool (){
-    try {
-        await new Pool({
+const pool = new Pool({
             user:config.get("pguser"),
             password:config.get("pgpassword"),
             host:config.get("pghost"),
@@ -28,11 +26,11 @@ async function pool (){
             database:config.get("pgdatabase")
         })  
         logger.info('connected to postgres db')
-    } catch (error) {
+    
         logger.error('could not connected to db')
-        process.exit(1)  
-    }
-}
+        //process.exit(1)  
+    
+
 export default pool;
 
 //export default connect

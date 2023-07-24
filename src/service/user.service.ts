@@ -29,17 +29,12 @@
 // export async function findUser (query:FilterQuery<UserDocument>){
 //     return UserModel.findOne(query).lean()
 // }
-import pool from '../database/db';
+import pool from "../utils/connect";
 import bcrypt from "bcrypt";
 import { UserDocument, UserInput } from '../models/user.model';
+import { checkEmail } from '../queries/auth.queries';
 import config from "config";
 
-
-import {} from "express"
-export const getUser:string = "SELECT * FROM users"
-export const getUserById:string = "SELECT * FROM users WHERE id = $1"
-export const checkEmail: string= "SELECT s FROM user s WHERE s.email = $1"
-export const addUser:string= "INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING username, email,password,created_at, updated_at"
 
 
 // export async function createUserHandler (input:UserDocument,req:Request,res:Response){
@@ -70,11 +65,6 @@ export async function createUser(user: UserInput) {
     return creatnewUser.rows[0]
   }
 
-export async function findByEmail(email: string): Promise<UserDocument | null> {
-    return pool.query('SELECT * FROM users WHERE email = $1', [email]);
-  }
-
-  // You can add more CRUD operations as needed...
 
 export async function comparePassword(user: UserDocument, candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, user.password);

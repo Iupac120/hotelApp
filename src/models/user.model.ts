@@ -45,7 +45,7 @@
 
 // export default UserModel;
 
-import pool from "../database/db";
+
 import config from "config"
 
 
