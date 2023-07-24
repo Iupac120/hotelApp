@@ -57,7 +57,8 @@ export async function createUser(user: UserInput) {
          //res.status(201).json({message:"Email already exists"})
          return false
      }
-    const hashedPassword = await bcrypt.hash(user.password, config.get<number>('saltWorkFactor'));
+    const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
+    const hashedPassword = await bcrypt.hash(user.password,salt );
     const creatnewUser = await  pool.query(
       'INSERT INTO users(email, name, password) VALUES($1, $2, $3) RETURNING id, email, name, created_at, updated_at',
       [user.email, user.username, hashedPassword]
@@ -65,7 +66,17 @@ export async function createUser(user: UserInput) {
     return creatnewUser.rows[0]
   }
 
-
+export async function loginUser (input:UserDocument){
+  const emailExist = await pool.query(checkEmail,[input.email])
+  if(emailExist.rows.length === 0){
+    return false
+  }
+  let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
+  if(!user){
+    return false
+  }
+  return emailExist.rows[0]
+}
 export async function comparePassword(user: UserDocument, candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, user.password);
   }

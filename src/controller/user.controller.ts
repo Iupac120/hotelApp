@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser } from '../service/user.service';
+ import { createUser, loginUser } from '../service/user.service';
  import logger from '../utils/logger';
  import { createUserInput } from '../schema/user.schema';
 
@@ -13,6 +13,11 @@ import {Request,Response} from 'express';
          console.log(e)
          return res.status(409).send(e.message)
     }
+ }
+
+ export async function loginUserHandler(req:Request,res:Response){
+    const user =  await loginUser(req.body)
+    return res.status(201).json(user)
  }
 
  export async function getUserHandler(req:Request,res:Response){

@@ -11,18 +11,24 @@ export async function createHotelService(hotel: HotelDocument) {
          //res.status(201).json({message:"Email already exists"})
          return false
      }
+     console.log("name",hotelExist)
+    //  const photosArrayLiteral = `{${hotel.photos.join(",")}}`;
+    //  const roomsArrayLiteral = `{${hotel.rooms.join(",")}}`;
+
     const creatnewUser = await  pool.query(addHotel,
       [hotel.name,hotel.type, hotel.address, hotel.distance, hotel.photos, hotel.description, hotel.rating, hotel.rooms, hotel.cheapest_price, hotel.featured]
     );
+    console.log("insert",creatnewUser)
       return creatnewUser.rows[0]
     } catch (e:any) {
+      console.log(e)
       throw new Error(e)
     }
   }
 
   export async function getAllHotelsService(){
     const hotels =  await pool.query(getHotels)
-    return hotels.rows[0]
+    return hotels.rows
   } 
 
   export async function getSingleHotelService(hotelId:number){
