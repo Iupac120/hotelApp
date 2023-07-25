@@ -3,8 +3,9 @@ import { get } from "lodash";//to get a property that your not certain it exists
 import { verifyJwt } from "../utils/jwt.utils";
 import config from "config";
 import { reIssueAccessToken } from "../service/session.service";
+import { createCustomError } from "../errors/authentic.error";
 
-const deserializeUser = async (req:Request,res:Response,next:NextFunction) => {
+export async function deserializeUser (req:Request,res:Response,next:NextFunction) {
     const accessToken = get(req,"cookies.accessToken") || get(req,"headers.authorization","").replace(/^Bearer\s/,"")
     
     const refreshToken = get(req,"cookies.refreshToken") || get(req,"headers.x-refresh")
@@ -22,7 +23,7 @@ const deserializeUser = async (req:Request,res:Response,next:NextFunction) => {
     }
 
     if(expired && refreshToken){
-        const newAccessToken:string|boolean  = await reIssueAccessToken(refreshToken)
+        let newAccessToken:any  = await reIssueAccessToken(refreshToken)
         console.log("type",typeof(newAccessToken))
         if(typeof newAccessToken === "string"){
             res.setHeader("x-access-token",newAccessToken)
@@ -42,4 +43,22 @@ const deserializeUser = async (req:Request,res:Response,next:NextFunction) => {
     return next()
 }
 
-export default deserializeUser
+export async function verifyUser (req:Request,res:Response,next:NextFunction){
+    return deserializeUser(req,res,()=>{
+        if(req.locals.user.id === req.params.userId || req.locals.user.isAdmin){
+            return next()
+        }else{
+            return next(createCustomError("You are not authenticated",401))
+        }
+    })
+}
+
+export async function verifyAdmin (req:Request,res:Response,next:NextFunction){
+    return deserializeUser(req,res,()=>{
+        if(req.locals.user.isAdmin){
+            return next()
+        }else{
+            return next(createCustomError("You are not authenticated",401))
+        }
+    })
+}

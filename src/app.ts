@@ -11,7 +11,7 @@ import path from "path"
 import cookieParser from "cookie-parser"
 import deserializeUser from "./middleware/deserializeUser"
 import { errorHandler } from './errors/error.handler';
-import { createError } from './errors/authentic.error';
+
 
 const app = express();
 app.use(express.json())
@@ -21,13 +21,13 @@ app.use(cors({
     credentials: true
 }))
 app.use(cookieParser())
+
 app.use(deserializeUser)//assign middleware to every end point request
 app.use("/api/auth",authRoute)
 app.use("/api/hotels",hotelRoute)
 app.use("/api/rooms",roomRoute)
 app.use("/api/users",usersRoute)
 app.use(errorHandler)
-app.use(createError)
 const PORT = config.get<number>('port');
 app.listen(PORT,async() => {
     logger.info(`server is listening at port ${PORT}`)

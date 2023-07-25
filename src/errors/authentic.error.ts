@@ -1,8 +1,11 @@
-import { Request,Response,NextFunction } from "express";
+class CustomError extends Error{
+    status: number
+    constructor(message:string,status:number){
+        super(message);
+        this.status = status
+    }
+}
 
-export function createError (status:number,message:any){
-    const err = new Error()
-    err.status = status;
-    err.message = message
-    return err
+export function createCustomError (msg:string,status:number){
+    return new CustomError(msg,status)
 }

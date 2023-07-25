@@ -56,10 +56,7 @@ export interface UserInput {
        
 }
 
-export interface UserDocument extends UserInput {
-        username:string
-        email:string 
-        password:string 
+export interface UserDocument extends UserInput { 
         gender:string 
         first_name:string
         last_name:string
@@ -70,7 +67,6 @@ export interface UserDocument extends UserInput {
         date_of_birth:Date
         country_of_birth:string
         is_admin: boolean
-        updated_at: Date
         created_at: Date
 
 }

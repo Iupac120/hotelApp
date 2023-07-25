@@ -8,13 +8,8 @@ export async function createHotelService(hotel: HotelDocument) {
     try {
       const hotelExist:QueryResult = await pool.query(checkName,[hotel.name])
      if( hotelExist.rows.length){
-         //res.status(201).json({message:"Email already exists"})
          return false
      }
-     console.log("name",hotelExist)
-    //  const photosArrayLiteral = `{${hotel.photos.join(",")}}`;
-    //  const roomsArrayLiteral = `{${hotel.rooms.join(",")}}`;
-
     const creatnewUser = await  pool.query(addHotel,
       [hotel.name,hotel.type, hotel.address, hotel.distance, hotel.photos, hotel.description, hotel.rating, hotel.rooms, hotel.cheapest_price, hotel.featured]
     );

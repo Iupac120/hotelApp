@@ -32,36 +32,27 @@
 import pool from "../utils/connect";
 import bcrypt from "bcrypt";
 import { UserDocument, UserInput } from '../models/user.model';
-import { checkEmail } from '../queries/auth.queries';
+import { addUser, checkEmail } from '../queries/auth.queries';
 import config from "config";
 
 
-
-// export async function createUserHandler (input:UserDocument,req:Request,res:Response){
-//     const salt =  await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
-//     const {username,email,password} = req.body
-//     const emailExist = await pool.query(checkEmail,[email])
-//     if((await emailExist).rows.length){
-//         res.status(201).json({message:"Email already exists"})
-//     }
-//     const hashedPassword = await bcrypt.hash(password,salt)
-//     const user = pool.query(addUser,[username, email, hashedPassword])
-// }
-
-
+import { QueryResult } from "pg";
+import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
+import { HotelDocument } from "../models/hotel.model";
+import { deleteUserById, getUserById, getUsers, updateUserById } from "../queries/user.queries";
 
 
 export async function createUser(user: UserInput) {
     const emailExist = await pool.query(checkEmail,[user.email])
+    console.log("emailhere", emailExist.rows.length)
      if( emailExist.rows.length){
          //res.status(201).json({message:"Email already exists"})
          return false
      }
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
     const hashedPassword = await bcrypt.hash(user.password,salt );
-    const creatnewUser = await  pool.query(
-      'INSERT INTO users(email, name, password) VALUES($1, $2, $3) RETURNING id, email, name, created_at, updated_at',
-      [user.email, user.username, hashedPassword]
+    const creatnewUser = await  pool.query(addUser,
+      [user.username, user.email, hashedPassword]
     );
     return creatnewUser.rows[0]
   }
@@ -72,14 +63,33 @@ export async function loginUser (input:UserDocument){
     return false
   }
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
+  
   if(!user){
     return false
   }
   return emailExist.rows[0]
 }
-export async function comparePassword(user: UserDocument, candidatePassword: string): Promise<boolean> {
-    return bcrypt.compare(candidatePassword, user.password);
-  }
+
+
+export async function getAllUsersService(){
+    const users =  await pool.query(getUsers)
+    return users.rows
+  } 
+
+export async function getSingleUserService(userId:number){
+    const user:QueryResult =  await pool.query(getUserById, [userId])
+    return user.rows[0]
+  } 
+
+export async function updateUserService(input:UserDocument,userId:number){
+    const user =  await pool.query(updateUserById, [input.first_name, input.last_name, input.photo, input.phone, input.gender, input.city, input.address, input.country_of_birth, input.date_of_birth, userId])
+    return user.rows[0]
+  } 
+
+export async function deleteUserService(userId:number){
+    const user =  await pool.query(deleteUserById, [userId])
+    return user.rows[0]
+  } 
 
 
 

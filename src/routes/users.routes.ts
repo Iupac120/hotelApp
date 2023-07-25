@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router()
 import {Express,Request,Response} from 'express';
-import {createUserHandler, getUserHandler} from "../controller/user.controller";
+import {/*createUserHandler,*/ deleteUser, getAllUsers, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller";
 import validateResource from '../middleware/validateResources';
 import { createUserSchema } from '../schema/user.schema';
 import { createUserSesionHandler, deleteUserSessionHandler, getUserSesionHandler } from '../controller/session.controller';
@@ -16,9 +16,16 @@ router.get("/",(req:Request,res:Response) => {
         res.send("This is hotel booking app")
     })
 
-    //auth routes
-router.post("/",validateResource(createUserSchema),createUserHandler)
-router.get("/",requireUser,getUserHandler)
+    //user routes
+router.get("/", getAllUsers)
+router.get("/:userId",getUser)
+router.put("/:userId", updateUser)
+router.delete("/:userId", deleteUser)
+        
+
+
+//router.post("/",validateResource(createUserSchema),createUserHandler)
+//router.get("/",requireUser,getUserHandler)
 
     // //sesion routes
     // app.post("/api/sessions",validateResource(createSessionSchema),createUserSesionHandler)
