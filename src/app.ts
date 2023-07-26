@@ -9,7 +9,7 @@ import usersRoute from './routes/users.routes';
 import cors from 'cors';
 import path from "path"
 import cookieParser from "cookie-parser"
-import deserializeUser from "./middleware/deserializeUser"
+//import deserializeUser from "./middleware/deserializeUser"
 import { errorHandler } from './errors/error.handler';
 
 
@@ -22,7 +22,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 
-app.use(deserializeUser)//assign middleware to every end point request
+//app.use(deserializeUser)//assign middleware to every end point request
 app.use("/api/auth",authRoute)
 app.use("/api/hotels",hotelRoute)
 app.use("/api/rooms",roomRoute)

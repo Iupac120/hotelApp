@@ -1,5 +1,5 @@
 export interface RoomNumberDocument {
-    numbers:number
+    room_number:number
     unavailable_date:Date 
 
 }
