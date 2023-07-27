@@ -1,20 +1,21 @@
 import { QueryResult } from "pg";
 import pool from "../utils/connect";
 import { RoomDocument, RoomNumberDocument } from "../models/room.model";
-import { addRoom, addRoomNumber, deleteRoomById, deleteRoomNumberById, getHotelId, getRoomById, getRoomNumber, getRoomNumberById, getRoomNumbers, getRooms, updateHotelId, updateRoomById, updateRoomNumberById } from "../queries/room.queries";
+import { addRoom, addRoomNumber, deleteRoomById, deleteRoomNumberById, getHotelId, getRoomById, getRoomNumber, getRoomNumberById, getRoomNumbers, getRooms, getUpdateID, isRoomUnique, updateHotelId, updateRoomById, updateRoomNumberById, updateRoom_id } from "../queries/room.queries";
 
 
 export async function createRoomNumberService(room: RoomNumberDocument) {
     const RoomNumberExist:QueryResult = await pool.query(getRoomNumber,[room.room_number])
-    if(RoomNumberExist){
+    if(RoomNumberExist.rows.length){
          return false
      }
     const creatnewRoomNunber = await  pool.query(addRoomNumber,
       [room.room_number,room.unavailable_date]
     );
-    console.log("insert",creatnewRoomNunber)
     return creatnewRoomNunber.rows[0]
   }
+
+
   export async function getAllRoomsNumberService(){
     const roomNumber =  await pool.query(getRoomNumbers)
     return roomNumber.rows
@@ -25,8 +26,15 @@ export async function createRoomNumberService(room: RoomNumberDocument) {
     return roomNumber.rows[0]
   } 
 
-  export async function updateRoomNumberService(input:RoomNumberDocument){
-    const roomNumber =  await pool.query(updateRoomNumberById, [input.room_number,input.unavailable_date])
+  export async function updateRoomNumberService(input:RoomNumberDocument,roomId: number){
+    const getRN = await pool.query(getUpdateID,[roomId])
+    console.log("type", (getRN.rows.length))
+    if(getRN.rows.length === 0){
+      return 0
+    }
+    
+    const roomNumber =  await pool.query(updateRoomNumberById, [input.room_number,input.unavailable_date,roomId])
+    console.log("room",roomNumber)
     return roomNumber.rows[0]
   } 
 
@@ -36,21 +44,31 @@ export async function deleteRoomNumberService(input:RoomNumberDocument){
 } 
 
 
-export async function createRoomService(room: RoomDocument,hotelId:number) {
-    const hotelExist:QueryResult = await pool.query(getHotelId,[hotelId])
-     if( !hotelExist){
+export async function createRoomService(room: RoomDocument,hotelId:number,RoomNumberId: number) {
+      const hotelExist:QueryResult = await pool.query(getHotelId,[hotelId])
+    if( !hotelExist.rows.length){
          return false
      }
-    const creatnewRoom = await  pool.query(addRoom,
-      [room.title, room.price, room.max_people,room.description]
-    );
-    if(!creatnewRoom){
+     const roomNumberExist:QueryResult = await pool.query(updateRoom_id,[RoomNumberId])
+     if( !roomNumberExist.rows.length){
+          return false
+      }
+      const id = Number(roomNumberExist.rows[0].room_number_id)
+    const checkRoom = await pool.query(isRoomUnique,[id])
+    if(checkRoom.rows.length){
       return false
     }
-    const updateHotel = await pool.query(updateHotelId,[creatnewRoom,hotelId])
+    const creatnewRoom = await  pool.query(addRoom,
+      [room.title, room.price, room.max_people,room.description,id]
+    );
+    if(!creatnewRoom.rows.length){
+      return false
+    }
+    const hotelRoom = Number(creatnewRoom.rows[0].room_id)
+    const updateHotel = await pool.query(updateHotelId,[hotelRoom,hotelId])
     return updateHotel.rows[0]
-  
   }
+
 
   export async function getAllRoomsService(){
     const rooms =  await pool.query(getRooms)
@@ -62,9 +80,11 @@ export async function createRoomService(room: RoomDocument,hotelId:number) {
     return room.rows[0]
   } 
 
+  
   export async function updateRoomService(room:RoomDocument,roomId:number){
     const rooms =  await pool.query(updateRoomById, [room.title, room.price, room.max_people, room.description, room.room_numbers, roomId])
   } 
+
 
   export async function deleteRoomService(roomId:number){
     const rooms =  await pool.query(deleteRoomById, [roomId])
