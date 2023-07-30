@@ -1,0 +1,5 @@
+export const getUsers:string = "SELECT * FROM users"
+export const getUserById:string = "SELECT * FROM users WHERE email = $1"
+export const deleteUserById:string = "DELETE FROM users WHERE user_id = $1"
+export const addFacebookUser:string = "INSERT INTO users (first_name,last_name, photo, gender, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING *"
+export const addGoogleUser:string = "INSERT INTO users (username, email, first_name, photo) VALUES ($1, $2, $3, $4) RETURNING *"

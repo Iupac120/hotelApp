@@ -18,6 +18,9 @@ export default {
     googleClientId:process.env.GOOGLECLIENTID,
     googleClientSecret:process.env.GOOGLECLIENTSECRET,
     googleOauthRedirectUrl:process.env.GOOGLEOAUTHREDIRECTURL,
+    facebookClientId:process.env.FACEBOOKCLIENTID,
+    facebookClientSecret:process.env.FACEBOOKCLIENTSECRET,
+    facebookOauthRedirectUrl:process.env.FACEBOOKREDIRECTURL,
     privateKey:process.env.PRIVATEKEY,
     publicKey:process.env.PUBLICKEY
 
