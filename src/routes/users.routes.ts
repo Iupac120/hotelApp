@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router()
 import {Express,Request,Response} from 'express';
-import {/*createUserHandler,*/ createPasswordHandler, createResetPasswordHandler, deleteUser, getAllUsers, getPasswordHandler, getResetPasswordHandler, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller";
+import {/*createUserHandler,*/  deleteUser, getAllUsers, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller";
 import validateResource from '../middleware/validateResources';
 import { createUserSchema } from '../schema/user.schema';
 import { createUserSesionHandler, deleteUserSessionHandler, getUserSesionHandler } from '../controller/session.controller';
@@ -21,10 +21,7 @@ router.get("/", getAllUsers)
 router.get("/:userId",getUser)
 router.put("/:userId", updateUser)
 router.delete("/:userId", deleteUser)
-router.get("/forgot-password",getPasswordHandler)
-router.post("/forgot-password",createPasswordHandler)
-router.get("/reset-password/:user_id/:token", getResetPasswordHandler)
-router.post("/reset-password",createResetPasswordHandler)
+
         
 
 

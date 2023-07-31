@@ -39,32 +39,53 @@ import * as crypto from "crypto"
 import { QueryResult } from "pg";
 import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
 import { HotelDocument } from "../models/hotel.model";
-import { deleteUserById, getUserByEmail, getUserById, getUsers, updateUserById } from "../queries/user.queries";
-import { NotFoundError } from "../errors/error.handler";
+import {  deleteUserById, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserPassword, updateUserToken } from "../queries/user.queries";
+import { BadRequestError, ForBiddenError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../utils/mailer.utils";
+import { generateOtp } from "../utils/random.utils";
 
 
 export async function createUser(user: UserInput) {
     const emailExist = await pool.query(checkEmail,[user.email])
-    console.log("emailhere", emailExist.rows.length)
      if( emailExist.rows.length){
-         //res.status(201).json({message:"Email already exists"})
-         return false
+         return UnAuthorizedError
      }
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
     const hashedPassword = await bcrypt.hash(user.password,salt );
+    const otp = await generateOtp()
+    const otpDate = Date.now() + 1800000
+    const otpTime = new Date(otpDate)
+    const hashedOtp = await bcrypt.hash(otp,salt)
     const creatnewUser = await  pool.query(addUser,
-      [user.username, user.email, hashedPassword]
+      [user.username, user.email, hashedPassword,hashedOtp,otpTime]
     );
-    await sendEmail()
+    //E-mail message
+  const message = `
+  <h2>Hello ${user.username}</h2>
+  <p>Please use the otp below to verify your account</p>
+  <p>This is your verification code ${otp}.</p>
+  <p>This code will expire in 30 minutes.</p>
+
+  <p>Regards...</p>
+  `
+  const subject = `User Verification Code`
+  const send_to = user.email
+  const sent_from = config.get<string>("emailedFrom")
+  const replyTo=`Yes`
+  await sendEmail(subject, message, send_to,sent_from,replyTo)
     return creatnewUser.rows[0]
   }
 
+  //login user service
 export async function loginUser (input:UserDocument){
   const emailExist = await pool.query(checkEmail,[input.email])
   if(emailExist.rows.length === 0){
     return false
+  }
+  const isVerified = emailExist.rows[0].is_verified
+  if(!isVerified){
+    return BadRequestError
   }
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
   
@@ -98,19 +119,24 @@ export async function deleteUserService(userId:number){
 
 export async function getUserPassword(){}
 
+//create reset token
 export async function createUserPassword(input:UserDocument){
   const user  =  await pool.query(getUserByEmail,[input.email])
   if(!user.rows.length){
     return NotFoundError
   }
-  const secret = crypto.randomBytes(32).toString("hex") + user.rows[0].user_id
-  const userId = user.rows[0].user_id
-  const payload = {
-    email: user.rows[0].email,
-    id:userId
+  //delete token if it exists in db
+  const tokenExist = user.rows[0].token
+  if(tokenExist){
+    await pool.query(updateTokenByQuery,[input.email])
   }
-
-  const token = jwt.sign(payload,secret,{expiresIn:config.get("accessTokenTtl")})
+  const token = crypto.randomBytes(32).toString("hex") + user.rows[0].user_id
+  //hash secret before saving in db
+  const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
+  const tokenDate =  Date.now() + 900000 //15 minutes
+  const tokenTime = new Date(tokenDate)
+  const userId = user.rows[0].user_id
+  await pool.query(updateUserToken,[hashedToken,tokenTime,userId])
   const link = `${config.get("url")}/${userId}/token=${token}` //
   //E-mail message
   const message = `
@@ -125,18 +151,27 @@ export async function createUserPassword(input:UserDocument){
   const send_to = user.rows[0].email
   const sent_from = config.get<string>("emailedFrom")
   const replyTo=`Yes`
-  
-  sendEmail(subject, message, send_to,sent_from,replyTo)
-
+  await sendEmail(subject, message, send_to,sent_from,replyTo)
+  return user.rows[0].email
 }
 
 
-export async function getUserResetPassword(){}
-export async function createUserResetPassword(userParams: number | string){
-  const user = await pool.query()
-  // if(typeof(userParams) === "number"){
-  //   if(userParams.user_id === )
-  // }
+export async function createUserResetPassword(input:UserInput,userId:number,token:string){
+    const user = await pool.query(getUserById,[userId])
+    if (!user.rows.length){
+        return NotFoundError
+    }
+    const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
+    const userExist =  user.rows[0]
+    if(userExist.token_expires_at < Date.now() || userExist.token !== hashedToken){
+      return ForBiddenError
+    }
+    const updatePassword = await pool.query(updateUserPassword,[input.password,userExist.email])
+    return updatePassword.rows[0].email
+}
+
+export async function getUserResetPassword(userParams: number | string){
+ 
 }
 
 

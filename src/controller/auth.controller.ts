@@ -1,22 +1,20 @@
 import {Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser, createUserPassword, loginUser } from '../service/user.service';
+ import { createUser, createUserPassword, createUserResetPassword, loginUser } from '../service/user.service';
  import logger from '../utils/logger';
  import { createUserInput } from '../schema/user.schema';
  import config from "config";
  import { signJwt } from '../utils/jwt.utils';
+import pool from '../utils/connect';
+import { getUserById } from '../queries/user.queries';
+import { NotFoundError } from '../errors/error.handler';
 
  export async function createUserHandler(req:Request<{},{},createUserInput["body"]>,res:Response){
-     try {
          const user =  await createUser(req.body);//call service
          return res.send(omit(user,"password"));//omit the user to json object
-     } catch (e:any) {
-         logger.error(e)
-         console.log(e)
-         return res.status(409).send(e.message)
-    }
  }
 
+ //login controller
  export async function loginUserHandler(req:Request,res:Response){
     const user =  await loginUser(req.body)
     const userAgent = req.get("user-agent") || "";
@@ -72,12 +70,19 @@ import {Request,Response} from 'express';
 export async function getPasswordHandler(req:Request,res:Response){
     return res.status(201).json("render forgot password page")
 }
+
 export async function createPasswordHandler(req:Request,res:Response){
     await createUserPassword(req.body)
     return res.status(201).json({message:`Password reset link send to your ${req.body.email}`})
 }
-export async function getResetPasswordHandler(req:Request,res:Response){}
+
 export async function createResetPasswordHandler(req:Request,res:Response){
-    const {user_id, token} = req.params
-    if (user_id !== )
+    const userId = Number(req.params.user_id)
+    const token = req.params.token
+    await createUserResetPassword(req.body,userId,token)
+    return res.status(201).json({message:"Password reset"})
+}
+//
+export async function getResetPasswordHandler(req:Request,res:Response){
+    return res.status(201).json("render reset password page")
 }

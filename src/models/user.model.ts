@@ -53,7 +53,8 @@ export interface UserInput {
         username:string;
         email:string
         password: string
-       
+        token: string
+        token_expires_at:Date
 }
 
 export interface UserDocument extends UserInput { 
