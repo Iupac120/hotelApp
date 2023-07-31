@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser, loginUser } from '../service/user.service';
+ import { createUser, createUserPassword, loginUser } from '../service/user.service';
  import logger from '../utils/logger';
  import { createUserInput } from '../schema/user.schema';
  import config from "config";
@@ -55,3 +55,29 @@ import {Request,Response} from 'express';
     return res.send({accessToken,refreshToken}) 
     //return res.status(201).json(user)
  }
+
+
+ export async function logout(req:Request, res:Response){
+    res.cookie("accessToken","", {
+        path:config.get("path"),
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "none",
+        secure:false//production is true
+    })
+    return res.status(200).json({message:"You have succesfully logged out"})
+ }
+
+ 
+export async function getPasswordHandler(req:Request,res:Response){
+    return res.status(201).json("render forgot password page")
+}
+export async function createPasswordHandler(req:Request,res:Response){
+    await createUserPassword(req.body)
+    return res.status(201).json({message:`Password reset link send to your ${req.body.email}`})
+}
+export async function getResetPasswordHandler(req:Request,res:Response){}
+export async function createResetPasswordHandler(req:Request,res:Response){
+    const {user_id, token} = req.params
+    if (user_id !== )
+}

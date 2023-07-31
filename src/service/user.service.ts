@@ -34,12 +34,15 @@ import bcrypt from "bcrypt";
 import { UserDocument, UserInput } from '../models/user.model';
 import { addUser, checkEmail } from '../queries/auth.queries';
 import config from "config";
-
+import * as crypto from "crypto"
 
 import { QueryResult } from "pg";
 import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
 import { HotelDocument } from "../models/hotel.model";
-import { deleteUserById, getUserById, getUsers, updateUserById } from "../queries/user.queries";
+import { deleteUserById, getUserByEmail, getUserById, getUsers, updateUserById } from "../queries/user.queries";
+import { NotFoundError } from "../errors/error.handler";
+import jwt from "jsonwebtoken"
+import { sendEmail } from "../utils/mailer.utils";
 
 
 export async function createUser(user: UserInput) {
@@ -54,6 +57,7 @@ export async function createUser(user: UserInput) {
     const creatnewUser = await  pool.query(addUser,
       [user.username, user.email, hashedPassword]
     );
+    await sendEmail()
     return creatnewUser.rows[0]
   }
 
@@ -92,6 +96,47 @@ export async function deleteUserService(userId:number){
   } 
 
 
+export async function getUserPassword(){}
 
+export async function createUserPassword(input:UserDocument){
+  const user  =  await pool.query(getUserByEmail,[input.email])
+  if(!user.rows.length){
+    return NotFoundError
+  }
+  const secret = crypto.randomBytes(32).toString("hex") + user.rows[0].user_id
+  const userId = user.rows[0].user_id
+  const payload = {
+    email: user.rows[0].email,
+    id:userId
+  }
+
+  const token = jwt.sign(payload,secret,{expiresIn:config.get("accessTokenTtl")})
+  const link = `${config.get("url")}/${userId}/token=${token}` //
+  //E-mail message
+  const message = `
+    <h2>Hello ${user.rows[0].first_name}</h2>
+    <p>Please use the url below to reset you password</p>
+    <p>This reset link is valid for <span>30</span> minutes</p>
+    <a href="${link}" clicktracking=off>${link}</a>
+
+    <p>Regards...</p>
+  `
+  const subject = `Password Reset Request`
+  const send_to = user.rows[0].email
+  const sent_from = config.get<string>("emailedFrom")
+  const replyTo=`Yes`
+  
+  sendEmail(subject, message, send_to,sent_from,replyTo)
+
+}
+
+
+export async function getUserResetPassword(){}
+export async function createUserResetPassword(userParams: number | string){
+  const user = await pool.query()
+  // if(typeof(userParams) === "number"){
+  //   if(userParams.user_id === )
+  // }
+}
 
 

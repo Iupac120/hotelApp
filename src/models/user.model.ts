@@ -67,6 +67,7 @@ export interface UserDocument extends UserInput {
         date_of_birth:Date
         country_of_birth:string
         is_admin: boolean
+        is_verified: boolean
         created_at: Date
 
 }

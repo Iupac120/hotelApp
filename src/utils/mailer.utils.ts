@@ -1,27 +1,26 @@
 
+import config from "config"
 import nodemailer from "nodemailer"
 
-export async function sendLoginEmail ({email, url, token}:{
-    email:string
-    url: string
-    token: string
-}){
-    const testAccount = await nodemailer.createTestAccount()
+export async function sendEmail (subject:string,message:string,send_to:string,sent_from:string,reply_to:string){
+    //const testAccount = await nodemailer.createTestAccount()
     const transporter = await nodemailer.createTransport({
         host:"smtp.gmail.com",
         port:587,
         secure:false,
         auth:{
-            user:testAccount.user,
-            pass:testAccount.pass
+            user:config.get<string>("user"),
+            pass:config.get<string>("pass")
         }
     })
-    const info = await transporter.sendMail({
-        from:'"Austech Group" <iupac120@gmail.com>',
-        to:email,
-        subject:'Login to your account',
-        html:`Login by clicking <a href="${url}/login#token=${token}">Here</a>`
-    })
+    const options = {
+        from:sent_from,
+        to:send_to,
+        replyTo:reply_to,
+        subject:subject,
+        html:message
+    } 
+    const info = await transporter.sendMail(options)
 
     console.log(`message:${nodemailer.getTestMessageUrl(info)}`)
 }

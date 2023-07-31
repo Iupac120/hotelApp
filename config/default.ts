@@ -11,6 +11,7 @@ export default {
     port:process.env.PORT,
     origin:process.env.ORIGIN,
     localhost:process.env.LOCALHOST,
+    url:process.env.URL,
     path:process.env.PATH,
     saltWorkFactor:10,//process.env.SALTWORKFACTOR,
     accessTokenTtl:process.env.ACCESSTOKENTTL,
@@ -22,6 +23,9 @@ export default {
     facebookClientSecret:process.env.FACEBOOKCLIENTSECRET,
     facebookOauthRedirectUrl:process.env.FACEBOOKREDIRECTURL,
     privateKey:process.env.PRIVATEKEY,
-    publicKey:process.env.PUBLICKEY
+    publicKey:process.env.PUBLICKEY,
+    user:process.env.NODEMAILER_USER,
+    pass:process.env.NODEMAILER_PASS,
+    emailedFrom:process.env.EmailedFrom    
 
 };
