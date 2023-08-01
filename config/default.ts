@@ -8,7 +8,7 @@ export default {
     pghost:process.env.PGHOST,
     pgport:process.env.PGPORT,
     pgdatabase:process.env.PGDATABASE,
-    port:process.env.PORT,
+    port:process.env.PORT || 5000,
     origin:process.env.ORIGIN,
     localhost:process.env.LOCALHOST,
     url:process.env.URL,

@@ -6,7 +6,7 @@ exports.createUserSchema = (0, zod_1.object)({
     body: (0, zod_1.object)({
         username: (0, zod_1.string)({ required_error: "Name is required" }),
         token: (0, zod_1.string)({ required_error: "Name is required" }),
-        token_expires_at: (0, zod_1.string)({ required_error: "Name is required" }),
+        token_expires_at: (0, zod_1.date)({ required_error: "Name is required" }),
         password: (0, zod_1.string)({ required_error: 'Pasword is required' }).min(6, "Password is too short. The minimum char is 6"),
         passwordConfirmation: (0, zod_1.string)({ required_error: "Password confirmation is required" }),
         email: (0, zod_1.string)({ required_error: 'Email is required' }).email('Not a valid email')

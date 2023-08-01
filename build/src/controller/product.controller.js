@@ -25,7 +25,7 @@ function updateProductHandler(req, res) {
         const userId = res.locals.user._id;
         const update = req.body;
         const productId = req.params.productId;
-        const product = yield (0, product_service_1.findProduct)({ productId });
+        let product = yield (0, product_service_1.findProduct)({ productId });
         if (!product) {
             res.sendStatus(404);
         }
