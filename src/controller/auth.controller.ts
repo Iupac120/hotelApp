@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser, createUserPassword, createUserResetPassword, loginUser } from '../service/user.service';
+ import { createUser, createUserPassword, createUserResetPassword, loginUser, verifyUserOtp } from '../service/user.service';
  import logger from '../utils/logger';
  import { createUserInput } from '../schema/user.schema';
  import config from "config";
@@ -85,4 +85,11 @@ export async function createResetPasswordHandler(req:Request,res:Response){
 //
 export async function getResetPasswordHandler(req:Request,res:Response){
     return res.status(201).json("render reset password page")
+}
+
+export async function verifyUserOtpHandler(req:Request,res:Response){
+    const input = req.body.otp
+    const userId = Number(req.params.user_id)
+    await verifyUserOtp(input,userId)
+    return res.status(201).json({message:"Email verification success"})
 }

@@ -39,7 +39,7 @@ import * as crypto from "crypto"
 import { QueryResult } from "pg";
 import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
 import { HotelDocument } from "../models/hotel.model";
-import {  deleteUserById, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserPassword, updateUserToken } from "../queries/user.queries";
+import {  deleteUserById, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserIsVerify, updateUserPassword, updateUserToken } from "../queries/user.queries";
 import { BadRequestError, ForBiddenError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../utils/mailer.utils";
@@ -175,3 +175,20 @@ export async function getUserResetPassword(userParams: number | string){
 }
 
 
+export async function verifyUserOtp (input:string, userId:number){
+  const userExist = await pool.query(getUserById,[userId])
+  if(!userExist.rows.length){
+    return NotFoundError
+  }
+  const user = userExist.rows[0]
+  if(!user.token) return ForBiddenError
+  if(Date.now() > user.token_expires_at) return BadRequestError
+  const isValid =  await bcrypt.compare(input,user.token)
+  if(!isValid) return BadRequestError
+  const verifyUser = await pool.query(updateUserIsVerify,[userId])
+  return verifyUser.rows[0]
+}
+
+export async function resendVerifyUserOtp(){
+  
+}

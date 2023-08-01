@@ -14,4 +14,4 @@ export const createUserSchema =  object({
     })
 })
 //what type of req body should the route expect
-export type createUserInput = Omit<TypeOf<typeof createUserSchema>,"body.passwordConfirmation">; 
+export type createUserInput = Omit<TypeOf<typeof createUserSchema>,"body.passwordConfirmation" | "body.token" | "body.token_expires_at">; 
