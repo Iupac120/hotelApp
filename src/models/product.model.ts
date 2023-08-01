@@ -5,7 +5,7 @@ import { UserDocument } from './user.model';
 //const nanoid =  customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789",10)
 
 export interface ProductInput{
-    user:UserDocument["_id"];
+    user:string
     title:string
     description:string;
     price:number;

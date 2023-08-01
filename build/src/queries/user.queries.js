@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserIsVerify = exports.updateUserPassword = exports.updateTokenByQuery = exports.updateUserToken = exports.getUserByEmail = exports.updateUserById = exports.deleteUserById = exports.getUserById = exports.getUsers = void 0;
+exports.getUsers = "SELECT * FROM users";
+exports.getUserById = "SELECT * FROM users WHERE user_id = $1";
+exports.deleteUserById = "DELETE FROM users WHERE user_id = $1";
+exports.updateUserById = "UPDATE users SET first_name = $1,last_name = $2, photo = $3, phone = $4, gender = $5, city = $6, address = $7, country_of_birth = $8, date_of_birth = $9 WHERE user_id = $10";
+exports.getUserByEmail = "SELECT * FROM users WHERE email = $1";
+exports.updateUserToken = "UPDATE users SET token = $1,token_expires_at = $2 WHERE user_id = $3";
+exports.updateTokenByQuery = "UPDATE users SET token = NULL, token_expires_at = NULL WHERE email = $1";
+exports.updateUserPassword = "UPDATE users SET password = $1 WHERE email = $2";
+exports.updateUserIsVerify = "UPDATE users SET is_verified = true WHERE email = $1";

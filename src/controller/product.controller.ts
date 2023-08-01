@@ -12,7 +12,7 @@ export async function updateProductHandler (req:Request<UpdateProductInput['para
     const userId =  res.locals.user._id
     const update = req.body
     const productId = req.params.productId
-    const product = await findProduct({productId})
+    let product = await findProduct({productId})
     if(!product){
         res.sendStatus(404)
     }
