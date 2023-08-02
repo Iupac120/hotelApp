@@ -45,7 +45,7 @@ app.use("/api/users",usersRoute)
 app.use("/",uploadImageRoute)
 app.use("/",passportRoute)
 app.use(errorHandler)
-const PORT = config.get<number>('port');
+const PORT = process.env.PORT || 5000//config.get<number>('port');
 app.listen(PORT,async() => {
     logger.info(`server is listening at port ${PORT}`)
     //await connect()
