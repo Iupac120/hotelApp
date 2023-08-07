@@ -1,8 +1,10 @@
 import express from 'express';
 import config from 'config';
+import pool from './utils/connect';
 import connect from './utils/connect'
 import logger from './utils/logger';
 import expressSession from "express-session";
+import pgSession from "connect-pg-simple"
 import authRoute from './routes/auth.routes';
 import hotelRoute from './routes/hotel.routes';
 import roomRoute from './routes/room.routes';
@@ -27,14 +29,28 @@ app.use(cors({
 }))
 app.set("view engine","ejs")
 app.set("views", path.join(__dirname,"views"))
-
+const sessionStore = pgSession(expressSession)
+const store = new sessionStore({
+    pool,
+    tableName:'session'
+})
 
 app.use(cookieParser())
 app.use(expressSession({
     secret:'Iupac120',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store:store,
+    cookie:{secure:false}//secure should be true on production when using http
 }))
+
+
+//assign session
+app.use(function(req,res,next){
+    res.locals.session = req.session
+    next()
+})
+
 app.use(passport.initialize())
 app.use(passport.session())
 //app.use(deserializeUser)//assign middleware to every end point request

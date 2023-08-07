@@ -60,7 +60,7 @@ passport.serializeUser((user,callback) => {
 })
 
 
-passport.deserializeUser((user, callback) => {
+passport.deserializeUser((user:string, callback) => {
     callback(null, user)
 })
 

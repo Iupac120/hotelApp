@@ -1,9 +1,9 @@
-import { Request,Response} from "express";
-//import { validatePassword } from "../service/user.service";
-import { findSessions, updateSession} from "../service/session.service";
-import { createSession } from "../service/session.service";
-import { signJwt } from "../utils/jwt.utils";
-import config from "config";
+// import { Request,Response} from "express";
+// import { validatePassword } from "../service/user.service";
+// import { findSessions, updateSession} from "../service/session.service";
+// import { createSession } from "../service/session.service";
+// import { signJwt } from "../utils/jwt.utils";
+// import config from "config";
 
 // export async function createUserSesionHandler (req:Request,res:Response){
 //     try{
@@ -52,21 +52,29 @@ import config from "config";
 //     }
 // }
 
-export async function getUserSesionHandler(req:Request,res:Response){
-    console.log(res.locals.user.user._id)
-    const userId = res.locals.user.user._id
-    console.log("user",userId)
-    const sessions = await findSessions({user:userId,valid:true})
-    return res.send(sessions)
-}
+// export async function getUserSesionHandler(req:Request,res:Response){
+//     console.log(res.locals.user.user._id)
+//     const userId = res.locals.user.user._id
+//     console.log("user",userId)
+//     const sessions = await findSessions({user:userId,valid:true})
+//     return res.send(sessions)
+// }
 
 
-export async function deleteUserSessionHandler(req:Request,res:Response){
-    const sessionId = res.locals.user.session
-    console.log("delete",sessionId)
-    await updateSession({_id:sessionId},{valid:false})
-    return res.send({
-        accessToken: null,
-        refreshToken:null
-    })
-}
+// export async function deleteUserSessionHandler(req:Request,res:Response){
+//     const sessionId = res.locals.user.session
+//     console.log("delete",sessionId)
+//     await updateSession({_id:sessionId},{valid:false})
+//     return res.send({
+//         accessToken: null,
+//         refreshToken:null
+//     })
+// }
+
+import {Request, Response} from "express"
+
+export async function addToCartHandler(req:Request,res:Response){}
+export async function removeFromCartHandler(req:Request,res:Response){}
+export async function CartTotalHandler(req:Request,res:Response){}
+export async function updateCartQuantityHandler(req:Request,res:Response){}
+export async function removeToCartHandler(req:Request,res:Response){}

@@ -1,12 +1,18 @@
-export interface OrderInput {
+import { SessionDocument } from "./session.model"
+
+export interface OrderDocument extends SessionDocument {
     user_id:number
-    product_id:number
-    paymentMethod: string
-    isPaid: string
-    isDelivered:number
-
+    session_id:SessionDocument
+    payment_Method: string
+    expected_time:Date
+    delivery_Address: string
+    payment_id:string
+    payment_status:boolean
+    payment_time:Date,
+    payment_email:string
+    is_Delivered:boolean
+    delivered_time:Date
+    total_price: number
+    created_at:Date
 }
 
-export interface OrderDocument extends OrderInput { 
-    created_at: Date
-}

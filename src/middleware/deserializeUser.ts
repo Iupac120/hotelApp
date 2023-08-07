@@ -45,7 +45,7 @@ export async function deserializeUser (req:Request,res:Response,next:NextFunctio
 
 export async function verifyUser (req:Request,res:Response,next:NextFunction){
     return deserializeUser(req,res,()=>{
-        if(req.locals.user.id === req.params.userId || req.locals.user.isAdmin){
+        if(res.locals.user.id === req.params.userId || res.locals.user.isAdmin){
             return next()
         }else{
             return next(createCustomError("You are not authenticated",401))
@@ -55,7 +55,7 @@ export async function verifyUser (req:Request,res:Response,next:NextFunction){
 
 export async function verifyAdmin (req:Request,res:Response,next:NextFunction){
     return deserializeUser(req,res,()=>{
-        if(req.locals.user.isAdmin){
+        if(res.locals.user.isAdmin){
             return next()
         }else{
             return next(createCustomError("You are not authenticated",401))
