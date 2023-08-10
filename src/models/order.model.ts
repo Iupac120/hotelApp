@@ -1,8 +1,8 @@
-import { SessionDocument } from "./session.model"
+import { CartItem } from "./session.model"
 
-export interface OrderDocument extends SessionDocument {
+export interface OrderDocument {
     user_id:number
-    session_id:SessionDocument
+    session_id:CartItem
     payment_Method: string
     expected_time:Date
     delivery_Address: string

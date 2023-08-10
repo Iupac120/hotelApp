@@ -43,7 +43,7 @@ export interface Cart {
   [itemId: number]: CartItem;
 }
 
-export interface CartTotal {
+export interface CartTotal  {
   totalQuantity: number;
   totalPrice: number;
 }

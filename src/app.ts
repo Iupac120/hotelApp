@@ -9,6 +9,8 @@ import authRoute from './routes/auth.routes';
 import hotelRoute from './routes/hotel.routes';
 import roomRoute from './routes/room.routes';
 import usersRoute from './routes/users.routes';
+import cartRoute from './routes/users.routes';
+import orderRoute from './routes/users.routes';
 import uploadImageRoute from "./routes/image.routes"
 import passportRoute from "./routes/passport.routes"
 import cors from 'cors';
@@ -58,6 +60,8 @@ app.use("/api/auth",authRoute)
 app.use("/api/hotels",hotelRoute)
 app.use("/api/rooms",roomRoute)
 app.use("/api/users",usersRoute)
+app.use("/api/cart",cartRoute)
+app.use("/api/order",orderRoute)
 app.use("/",uploadImageRoute)
 app.use("/",passportRoute)
 app.use(errorHandler)

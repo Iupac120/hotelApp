@@ -26,6 +26,6 @@ export default {
     publicKey:process.env.PUBLICKEY,
     user:process.env.NODEMAILER_USER,
     pass:process.env.NODEMAILER_PASS,
-    emailedFrom:process.env.EmailedFrom    
-
+    emailedFrom:process.env.EmailedFrom,    
+    stripe:process.env.STRIPE
 };
