@@ -1,4 +1,4 @@
-import {Request,Response} from 'express';
+import {NextFunction, Request,Response} from 'express';
  import { omit } from 'lodash';
  import { createUser, createUserPassword, createUserResetPassword, loginUser, verifyUserOtp } from '../service/user.service';
  import logger from '../utils/logger';
@@ -15,7 +15,7 @@ import { NotFoundError } from '../errors/error.handler';
  }
 
  //login controller
- export async function loginUserHandler(req:Request,res:Response){
+ export async function loginUserHandler(req:Request,res:Response, next:NextFunction){
     const user =  await loginUser(req.body)
     const userAgent = req.get("user-agent") || "";
     //create an acess token

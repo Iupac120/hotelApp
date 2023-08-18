@@ -117,40 +117,40 @@ export async function paymentCheckout(req:Request, res:Response) {
 
 
 export async function getAllOrderHandler (req:Request<GetProductInput['params']>,res:Response){
-    const product = await findAllOrder()
-    if(!product){
+    const order = await findAllOrder()
+    if(!order){
          return NotFoundError
     }
-    return res.send(product)
+    return res.send(order)
 }
 
 export async function getOrderHandler (req:Request<GetProductInput['params']>,res:Response){
-    const productId = Number(req.params.productId)
+    const orderId = Number(req.params.orderId)
     const body = req.body
-    const product = await findOrder(productId,body)
-    if(!product){
+    const order = await findOrder(orderId,body)
+    if(!order){
          return NotFoundError
     }
-    return res.send(product)
+    return res.send(order)
 }
 
 export async function updateOrderHandler (req:Request<GetProductInput['params']>,res:Response){
     const userId = Number(res.locals.user._id)
-    const productId = Number(req.params.productId)
+    const orderId = Number(req.params.orderId)
     const body = req.body
-    const product = await updateOrder(userId,productId,body)
-    if(!product){
+    const order = await updateOrder(userId,orderId,body)
+    if(!order){
          return NotFoundError
     }
-    return res.send(product)
+    return res.send(order)
 }
 
 export async function deleteOrderHandler(req:Request,res:Response){
     const userId = Number(res.locals.user._id)
-    const productId = Number(req.params.productId)
-    const product = await deleteOrder(userId,productId)
-    if(!product) return NotFoundError
-    return res.send(product)
+    const orderId = Number(req.params.orderId)
+    const order = await deleteOrder(userId,orderId)
+    if(!order) return NotFoundError
+    return res.send(order)
 }
 
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import config from 'config';
+import morgan from 'morgan';
 import pool from './utils/connect';
 import connect from './utils/connect'
 import logger from './utils/logger';
@@ -52,7 +53,7 @@ app.use(function(req,res,next){
     res.locals.session = req.session
     next()
 })
-
+app.use(morgan('tiny'))
 app.use(passport.initialize())
 app.use(passport.session())
 //app.use(deserializeUser)//assign middleware to every end point request

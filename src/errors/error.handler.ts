@@ -1,6 +1,13 @@
 import { Request,Response,NextFunction } from "express";
-
+import { CustomError } from "./authentic.error";
+import { string } from "zod";
 export function errorHandler (err:any,req:Request,res:Response,next:NextFunction){
+    if(err instanceof CustomError){
+        return res.status(err.status).json({
+            msg:err.message,
+            stack: process.env.NODE_ENV === 'production'? null: err.stack
+        })
+    }else{
     const errorStatus = err.status || 500
     const errorMessage = err.message || "Something went wrong"
     return res.status(errorStatus).json({
@@ -10,46 +17,27 @@ export function errorHandler (err:any,req:Request,res:Response,next:NextFunction
         stack:err.stack,
     })
 }
-export function BadRequestError (err:any,req:Request,res:Response,next:NextFunction){
-    const errorStatus = err.status || 400
-    const errorMessage = err.message || "Bad request error"
-    return res.status(errorStatus).json({
-        success:false,
-        status:errorStatus,
-        message:errorMessage,
-        stack:err.stack,
-    })
+}
+export class BadRequestError extends CustomError {
+    constructor(message:string){
+        super(message,400)
+    }
 }
 
-export function UnAuthorizedError (err:any,req:Request,res:Response,next:NextFunction){
-    const errorStatus = err.status || 401
-    const errorMessage = err.message || "Unauthorized error"
-    return res.status(errorStatus).json({
-        success:false,
-        status:errorStatus,
-        message:errorMessage,
-        stack:err.stack,
-    })
+export class UnAuthorizedError extends CustomError{
+    constructor(message:string){
+        super(message,401)
+    }
 }
 
-export function ForBiddenError (err:any,req:Request,res:Response,next:NextFunction){
-    const errorStatus = err.status || 403
-    const errorMessage = err.message || "Forbidden error"
-    return res.status(errorStatus).json({
-        success:false,
-        status:errorStatus,
-        message:errorMessage,
-        stack:err.stack,
-    })
+export class ForBiddenError extends CustomError{
+    constructor(message:string){
+        super(message,403)
+    }
 }
 
-export function NotFoundError (err:any,req:Request,res:Response,next:NextFunction){
-    const errorStatus = err.status || 404
-    const errorMessage = err.message || "Not found error"
-    return res.status(errorStatus).json({
-        success:false,
-        status:errorStatus,
-        message:errorMessage,
-        stack:err.stack,
-    })
+export class NotFoundError extends CustomError{
+    constructor(message:string){
+        super(message,404)
+    }
 }

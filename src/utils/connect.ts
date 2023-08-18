@@ -25,11 +25,12 @@ const pool = new Pool({
             port:config.get("pgport"),
             database:config.get("pgdatabase")
         })  
-        logger.info('connected to postgres db')
-    
-        logger.error('could not connected to db')
-        //process.exit(1)  
-    
+if (pool){
+    logger.info('connected to postgres db')
+}else{
+    logger.error('could not connected to db')
+    //process.exit(1)  
+}
 
 export default pool;
 

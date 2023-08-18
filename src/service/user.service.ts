@@ -85,8 +85,9 @@ export async function loginUser (input:UserDocument){
   }
   const isVerified = emailExist.rows[0].is_verified
   if(!isVerified){
-    return BadRequestError
+    return new BadRequestError("You are not verified")
   }
+  console.log("verify",isVerified)
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
   
   if(!user){
