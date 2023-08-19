@@ -31,11 +31,11 @@ import pool from "../utils/connect";
 export async function createProduct (input:ProductInput,userId:number) {
     const adminExist = await pool.query(checkUserQuery,[userId])
     if(!adminExist.rows.length){
-        return UnAuthorizedError
+        return new UnAuthorizedError("Only admit can create product")
     }
     const product = await pool.query(addProductQuery,[input.title,input.type,input.description, input.price,input.image,userId])
     if(!product.rows.length){
-        return BadRequestError
+        return new BadRequestError("product not found")
     }
     return product.rows[0]
 }

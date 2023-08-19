@@ -119,28 +119,28 @@ export async function paymentCheckout(req:Request, res:Response) {
 export async function getAllOrderHandler (req:Request<GetProductInput['params']>,res:Response){
     const order = await findAllOrder()
     if(!order){
-         return NotFoundError
+         return new NotFoundError("order not found")
     }
     return res.send(order)
 }
 
-export async function getOrderHandler (req:Request<GetProductInput['params']>,res:Response){
+export async function getOrderHandler (req:Request,res:Response){
     const orderId = Number(req.params.orderId)
     const body = req.body
     const order = await findOrder(orderId,body)
     if(!order){
-         return NotFoundError
+         return new NotFoundError("Order not found")
     }
     return res.send(order)
 }
 
-export async function updateOrderHandler (req:Request<GetProductInput['params']>,res:Response){
+export async function updateOrderHandler (req:Request,res:Response){
     const userId = Number(res.locals.user._id)
     const orderId = Number(req.params.orderId)
     const body = req.body
     const order = await updateOrder(userId,orderId,body)
     if(!order){
-         return NotFoundError
+         return new NotFoundError("Order not found")
     }
     return res.send(order)
 }
@@ -149,7 +149,7 @@ export async function deleteOrderHandler(req:Request,res:Response){
     const userId = Number(res.locals.user._id)
     const orderId = Number(req.params.orderId)
     const order = await deleteOrder(userId,orderId)
-    if(!order) return NotFoundError
+    if(!order) return new NotFoundError("Order not found")
     return res.send(order)
 }
 

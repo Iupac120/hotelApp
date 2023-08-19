@@ -49,7 +49,7 @@ import { generateOtp } from "../utils/random.utils";
 export async function createUser(user: UserInput) {
     const emailExist = await pool.query(checkEmail,[user.email])
      if( emailExist.rows.length){
-         return UnAuthorizedError
+         return new UnAuthorizedError ("You already have an account, sign with your email")
      }
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
     const hashedPassword = await bcrypt.hash(user.password,salt );
@@ -124,7 +124,7 @@ export async function getUserPassword(){}
 export async function createUserPassword(input:UserDocument){
   const user  =  await pool.query(getUserByEmail,[input.email])
   if(!user.rows.length){
-    return NotFoundError
+    return new NotFoundError("Email does not exist, sign up to register")
   }
   //delete token if it exists in db
   const tokenExist = user.rows[0].token
@@ -160,12 +160,12 @@ export async function createUserPassword(input:UserDocument){
 export async function createUserResetPassword(input:UserInput,userId:number,token:string){
     const user = await pool.query(getUserById,[userId])
     if (!user.rows.length){
-        return NotFoundError
+        return new NotFoundError("Email does not exist, signup to register")
     }
     const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
     const userExist =  user.rows[0]
     if(userExist.token_expires_at < Date.now() || userExist.token !== hashedToken){
-      return ForBiddenError
+      return new ForBiddenError("Token has expired, request for a new token")
     }
     const updatePassword = await pool.query(updateUserPassword,[input.password,userExist.email])
     return updatePassword.rows[0].email
@@ -179,13 +179,13 @@ export async function getUserResetPassword(userParams: number | string){
 export async function verifyUserOtp (input:string, userId:number){
   const userExist = await pool.query(getUserById,[userId])
   if(!userExist.rows.length){
-    return NotFoundError
+    return new NotFoundError("Email does not exist")
   }
   const user = userExist.rows[0]
-  if(!user.token) return ForBiddenError
-  if(Date.now() > user.token_expires_at) return BadRequestError
+  if(!user.token) return new ForBiddenError("Token not found")
+  if(Date.now() > user.token_expires_at) return new BadRequestError("Tooken has expired")
   const isValid =  await bcrypt.compare(input,user.token)
-  if(!isValid) return BadRequestError
+  if(!isValid) return new BadRequestError("Invalid token")
   const verifyUser = await pool.query(updateUserIsVerify,[userId])
   return verifyUser.rows[0]
 }

@@ -1,11 +1,11 @@
 
-// import { FilterQuery, UpdateQuery } from 'mongoose';
-// import sessionModel,{SessionDocument} from '../models/session.model';
-// import { verifyJwt } from '../utils/jwt.utils';
-// import { get } from 'lodash';
-// import { findUser } from './user.service';
-// import config from "config"
-// import { signJwt } from '../utils/jwt.utils';
+import { FilterQuery, UpdateQuery } from 'mongoose';
+//import sessionModel,{SessionDocument} from '../models/session.model';
+import { verifyJwt } from '../utils/jwt.utils';
+import { get } from 'lodash';
+//import { findUser } from './user.service';
+import config from "config"
+import { signJwt } from '../utils/jwt.utils';
 
 // export async function createSession (userId:string,userAgent:string){
 //     try {
@@ -24,19 +24,19 @@
 //     return sessionModel.updateOne(query,update)
 // }
 
-// export async function reIssueAccessToken({refreshToken}:{refreshToken:string}){
-//     const {decoded}  = verifyJwt(refreshToken)
-//     if(!decoded || !get(decoded,"session") ) return false;
-//     const session = await sessionModel.findById(get(decoded,"session"))
-//     if(!session || !session.valid) return false
+export async function reIssueAccessToken({refreshToken}:{refreshToken:string}){
+    const {decoded}  = verifyJwt(refreshToken)
+    if(!decoded || !get(decoded,"session") ) return false;
+    const session = await sessionModel.findById(get(decoded,"session"))
+    if(!session || !session.valid) return false
 
-//     const user = await findUser({_id:session.user})
-//     if(!user) return false
-//     const accesToken = signJwt({...user,session:session._id},{
-//         expiresIn:config.get("accessTokenTtl")
-//     })
-//     return accesToken
-// }
+    const user = await findUser({_id:session.user})
+    if(!user) return false
+    const accesToken = signJwt({...user,session:session._id},{
+        expiresIn:config.get("accessTokenTtl")
+    })
+    return accesToken
+}
 
 import {Cart, CartItem, CartTotal} from "../models/session.model"
 
