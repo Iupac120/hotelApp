@@ -1,6 +1,6 @@
 import {NextFunction, Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser, createUserPassword, createUserResetPassword, loginUser, verifyUserOtp } from '../service/user.service';
+ import { createUser, createUserPassword, createUserResetPassword, loginUser, resendVerifyUserOtp, verifyUserOtp } from '../service/user.service';
  import logger from '../utils/logger';
  import { createUserInput } from '../schema/user.schema';
  import config from "config";
@@ -11,7 +11,8 @@ import { NotFoundError } from '../errors/error.handler';
 
  export async function createUserHandler(req:Request<{},{},createUserInput["body"]>,res:Response){
          const user =  await createUser(req.body);//call service
-         return res.send(omit(user,"password"));//omit the user to json object
+         //return res.send(omit(user,"password"));//omit the user to json object
+         return res.status(201).json(`Sign up otp has been sent to your email:${user.email}`);
  }
 
  //login controller
@@ -89,7 +90,13 @@ export async function getResetPasswordHandler(req:Request,res:Response){
 
 export async function verifyUserOtpHandler(req:Request,res:Response){
     const input = req.body.otp
-    const userId = Number(req.params.user_id)
-    await verifyUserOtp(input,userId)
+    const otpEmail = req.body.email
+    await verifyUserOtp(input,otpEmail)
     return res.status(201).json({message:"Email verification success"})
+}
+
+export async function createResetOtpHandler(req:Request, res:Response){
+    const input = req.body.email
+    const user = await resendVerifyUserOtp(input)
+    res.status(201).json({message:`A new otp has been sent to your email:${user.email}`})
 }

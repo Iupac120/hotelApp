@@ -8,3 +8,5 @@ export const updateUserToken:string = "UPDATE users SET token = $1,token_expires
 export const updateTokenByQuery:string = "UPDATE users SET token = NULL, token_expires_at = NULL WHERE email = $1"
 export const updateUserPassword:string ="UPDATE users SET password = $1 WHERE email = $2"
 export const updateUserIsVerify:string ="UPDATE users SET is_verified = true WHERE email = $1"
+export const getOtpByEmail:string = "SELECT * FROM users WHERE email = $1"
+export const updateUserResetToken:string = "UPDATE users SET token = $1,token_expires_at = $2 WHERE email = $3"

@@ -53,8 +53,6 @@ export interface UserInput {
         username:string;
         email:string
         password: string
-        token: string
-        token_expires_at:Date
 }
 
 export interface UserDocument extends UserInput { 
@@ -69,6 +67,8 @@ export interface UserDocument extends UserInput {
         country_of_birth:string
         is_admin: boolean
         is_verified: boolean
+        token: string
+        token_expires_at:Date
         created_at: Date
 
 }

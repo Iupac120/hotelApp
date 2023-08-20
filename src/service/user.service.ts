@@ -39,7 +39,7 @@ import * as crypto from "crypto"
 import { QueryResult } from "pg";
 import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
 import { HotelDocument } from "../models/hotel.model";
-import {  deleteUserById, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserIsVerify, updateUserPassword, updateUserToken } from "../queries/user.queries";
+import {  deleteUserById, getOtpByEmail, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserIsVerify, updateUserPassword, updateUserResetToken, updateUserToken } from "../queries/user.queries";
 import { BadRequestError, ForBiddenError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../utils/mailer.utils";
@@ -49,7 +49,7 @@ import { generateOtp } from "../utils/random.utils";
 export async function createUser(user: UserInput) {
     const emailExist = await pool.query(checkEmail,[user.email])
      if( emailExist.rows.length){
-         return new UnAuthorizedError ("You already have an account, sign with your email")
+         throw new UnAuthorizedError ("You already have an account, login with your email")
      }
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
     const hashedPassword = await bcrypt.hash(user.password,salt );
@@ -85,7 +85,7 @@ export async function loginUser (input:UserDocument){
   }
   const isVerified = emailExist.rows[0].is_verified
   if(!isVerified){
-    return new BadRequestError("You are not verified")
+    throw new BadRequestError("You are not verified")
   }
   console.log("verify",isVerified)
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
@@ -124,7 +124,7 @@ export async function getUserPassword(){}
 export async function createUserPassword(input:UserDocument){
   const user  =  await pool.query(getUserByEmail,[input.email])
   if(!user.rows.length){
-    return new NotFoundError("Email does not exist, sign up to register")
+    throw new NotFoundError("Email does not exist, sign up to register")
   }
   //delete token if it exists in db
   const tokenExist = user.rows[0].token
@@ -160,12 +160,12 @@ export async function createUserPassword(input:UserDocument){
 export async function createUserResetPassword(input:UserInput,userId:number,token:string){
     const user = await pool.query(getUserById,[userId])
     if (!user.rows.length){
-        return new NotFoundError("Email does not exist, signup to register")
+        throw new NotFoundError("Email does not exist, signup to register")
     }
     const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
     const userExist =  user.rows[0]
     if(userExist.token_expires_at < Date.now() || userExist.token !== hashedToken){
-      return new ForBiddenError("Token has expired, request for a new token")
+      throw new ForBiddenError("Token has expired, request for a new token")
     }
     const updatePassword = await pool.query(updateUserPassword,[input.password,userExist.email])
     return updatePassword.rows[0].email
@@ -176,20 +176,48 @@ export async function getUserResetPassword(userParams: number | string){
 }
 
 
-export async function verifyUserOtp (input:string, userId:number){
-  const userExist = await pool.query(getUserById,[userId])
+export async function verifyUserOtp (input:string,otpEmail:string){
+  const userExist = await pool.query(getUserByEmail,[otpEmail])
+  console.log("email", userExist.rows[0])
   if(!userExist.rows.length){
-    return new NotFoundError("Email does not exist")
+    throw new NotFoundError("Email does not exist")
   }
   const user = userExist.rows[0]
-  if(!user.token) return new ForBiddenError("Token not found")
-  if(Date.now() > user.token_expires_at) return new BadRequestError("Tooken has expired")
+  if(!user.token) throw new ForBiddenError("Token not found")
+  if(Date.now() < user.token_expires_at) throw new BadRequestError("Token has expired")
   const isValid =  await bcrypt.compare(input,user.token)
-  if(!isValid) return new BadRequestError("Invalid token")
-  const verifyUser = await pool.query(updateUserIsVerify,[userId])
+  if(!isValid) throw new BadRequestError("Invalid token")
+  const verifyUser = await pool.query(updateUserIsVerify,[otpEmail])
   return verifyUser.rows[0]
 }
 
-export async function resendVerifyUserOtp(){
+export async function resendVerifyUserOtp(input:string){
+ const userExist = await pool.query(getUserByEmail,[input])
+ if(!userExist.rows.length) throw new NotFoundError("Email not found")
+ const isVerified = userExist.rows[0].is_verified
+if (isVerified) throw new BadRequestError("You have been verified, login with your email")
+const deleteOtp = await pool.query(updateTokenByQuery,[input])
+if(deleteOtp){
+const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'))
+const otp = await generateOtp()
+const otpDate = Date.now() + 1800000
+const otpTime = new Date(otpDate)
+const hashedOtp =  await bcrypt.hash(otp,salt)
+const updateOtp =  await pool.query(updateUserResetToken,[hashedOtp, otpTime, input])
+    //E-mail message
+const message = `
+    <h2>Hello ${userExist.rows[0].username}</h2>
+    <p>Please use the otp below to verify your account</p>
+    <p>This is your verification code ${otp}.</p>
+    <p>This code will expire in ${otpTime} minutes.</p>
   
+    <p>Regards...</p>
+    `
+  const subject = `User Verification Code`
+  const send_to = userExist.rows[0].email
+  const sent_from = config.get<string>("emailedFrom")
+  const replyTo=`Yes`
+  await sendEmail(subject, message, send_to,sent_from,replyTo)
+}
+  return userExist.rows[0]
 }

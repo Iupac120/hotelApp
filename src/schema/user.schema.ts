@@ -3,8 +3,6 @@ import {date, object,string,TypeOf} from 'zod';
 export const createUserSchema =  object({
     body: object({
         username:string({required_error:"Name is required"}),
-        token:string({required_error:"Name is required"}),
-        token_expires_at:date({required_error:"Name is required"}),
         password:string({required_error:'Pasword is required'}).min(6,"Password is too short. The minimum char is 6"),
         passwordConfirmation:string({required_error:"Password confirmation is required"}),
         email:string({required_error:'Email is required'}).email('Not a valid email')
@@ -14,4 +12,4 @@ export const createUserSchema =  object({
     })
 })
 //what type of req body should the route expect
-export type createUserInput = Omit<TypeOf<typeof createUserSchema>,"body.passwordConfirmation" | "token" | "token_expires_at">; 
+export type createUserInput = Omit<TypeOf<typeof createUserSchema>,"body.passwordConfirmation">; 
