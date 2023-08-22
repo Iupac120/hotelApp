@@ -89,9 +89,9 @@ export async function loginUser (input:UserDocument){
   }
   console.log("verify",isVerified)
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
-  
+  console.log("compareUser", user)
   if(!user){
-    return false
+    throw new UnAuthorizedError("Sorry, you password is incorrect")
   }
   return emailExist.rows[0]
 }
@@ -117,8 +117,6 @@ export async function deleteUserService(userId:number){
     return user.rows[0]
   } 
 
-
-export async function getUserPassword(){}
 
 //create reset token
 export async function createUserPassword(input:UserDocument){
@@ -168,12 +166,9 @@ export async function createUserResetPassword(input:UserInput,userId:number,toke
       throw new ForBiddenError("Token has expired, request for a new token")
     }
     const updatePassword = await pool.query(updateUserPassword,[input.password,userExist.email])
-    return updatePassword.rows[0].email
+    return user.rows[0].email
 }
 
-export async function getUserResetPassword(userParams: number | string){
- 
-}
 
 
 export async function verifyUserOtp (input:string,otpEmail:string){

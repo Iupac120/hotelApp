@@ -17,7 +17,7 @@ export const createHotelSchema =  object({
 //request params
 export const getHotelSchema = object({
         params:object({
-            hotelId: number({required_error:"Product id is required"})
+            hotelId: number({required_error:"hotel id is required"})
         })
 })
 //what type of req body should the route expect

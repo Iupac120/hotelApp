@@ -2,23 +2,19 @@ import { QueryResult } from "pg";
 import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
 import pool from "../utils/connect";
 import { HotelDocument } from "../models/hotel.model";
+import { BadRequestError } from "../errors/error.handler";
 
 
 export async function createHotelService(hotel: HotelDocument) {
-    try {
       const hotelExist:QueryResult = await pool.query(checkName,[hotel.name])
      if( hotelExist.rows.length){
-         return false
+         throw new BadRequestError("Hotel not found")
      }
     const creatnewUser = await  pool.query(addHotel,
       [hotel.name,hotel.type, hotel.address, hotel.distance, hotel.photos, hotel.description, hotel.rating, hotel.rooms, hotel.cheapest_price, hotel.featured]
     );
     console.log("insert",creatnewUser)
       return creatnewUser.rows[0]
-    } catch (e:any) {
-      console.log(e)
-      throw new Error(e)
-    }
   }
 
   export async function getAllHotelsService(){

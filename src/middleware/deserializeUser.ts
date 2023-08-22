@@ -9,7 +9,8 @@ export async function deserializeUser (req:Request,res:Response,next:NextFunctio
     const accessToken = get(req,"cookies.accessToken") || get(req,"headers.authorization","").replace(/^Bearer\s/,"")
     
     const refreshToken = get(req,"cookies.refreshToken") || get(req,"headers.x-refresh")
-
+console.log("access", accessToken)
+console.log("refresh", refreshToken)
     if(!accessToken){
         return next()
     }
@@ -55,6 +56,7 @@ export async function verifyUser (req:Request,res:Response,next:NextFunction){
 
 export async function verifyAdmin (req:Request,res:Response,next:NextFunction){
     return deserializeUser(req,res,()=>{
+        console.log("isAdmin",res.locals.user)
         if(res.locals.user.isAdmin){
             return next()
         }else{
