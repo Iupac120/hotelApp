@@ -87,9 +87,7 @@ export async function loginUser (input:UserDocument){
   if(!isVerified){
     throw new BadRequestError("You are not verified")
   }
-  console.log("verify",isVerified)
   let user:Boolean = await bcrypt.compare(input.password, emailExist.rows[0].password)
-  console.log("compareUser", user)
   if(!user){
     throw new UnAuthorizedError("Sorry, you password is incorrect")
   }
@@ -132,14 +130,15 @@ export async function createUserPassword(input:UserDocument){
   const token = crypto.randomBytes(32).toString("hex") + user.rows[0].user_id
   //hash secret before saving in db
   const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
-  const tokenDate =  Date.now() + 900000 //15 minutes
+  const tokenDate =  Date.now() + 1800000 //15 minutes
   const tokenTime = new Date(tokenDate)
   const userId = user.rows[0].user_id
+  const username = user.rows[0].username
   await pool.query(updateUserToken,[hashedToken,tokenTime,userId])
   const link = `${config.get("url")}/${userId}/token=${token}` //
   //E-mail message
   const message = `
-    <h2>Hello ${user.rows[0].first_name}</h2>
+    <h2>Hello ${username}</h2>
     <p>Please use the url below to reset you password</p>
     <p>This reset link is valid for <span>30</span> minutes</p>
     <a href="${link}" clicktracking=off>${link}</a>
@@ -162,10 +161,13 @@ export async function createUserResetPassword(input:UserInput,userId:number,toke
     }
     const hashedToken  = crypto.createHash("sha256").update(token).digest("hex")
     const userExist =  user.rows[0]
-    if(userExist.token_expires_at < Date.now() || userExist.token !== hashedToken){
+    if(userExist.token !== hashedToken) throw new ForBiddenError("Incorrect request link")
+    if(userExist.token_expires_at < Date.now()){
       throw new ForBiddenError("Token has expired, request for a new token")
     }
-    const updatePassword = await pool.query(updateUserPassword,[input.password,userExist.email])
+    const salt = await bcrypt.genSalt(config.get("saltWorkFactor"))
+    const newPassword =  await bcrypt.hash(input.password,salt)
+    const updatePassword = await pool.query(updateUserPassword,[newPassword,userExist.email])
     return user.rows[0].email
 }
 

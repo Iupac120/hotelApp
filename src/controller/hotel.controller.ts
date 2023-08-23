@@ -1,5 +1,6 @@
 import { Request,Response } from "express";
 import { createHotelService,updateHotelService, deleteHotelService,getAllHotelsService,getSingleHotelService } from "../service/hotel.service";
+import { getHotelInput } from "../schema/hotel.schema";
 //import { createHotelInput, getHotelInput } from "../schema/hotel.schema";
 
 export async function createHotel (req:Request,res:Response){
@@ -23,7 +24,7 @@ export async function getAllHotel (req:Request,res:Response){
 }
 export async function getHotel (req:Request,res:Response){
     try {
-        const hotelId = Number(req.params.hotelId)
+        const hotelId = req.params.hotelId
         const hotel = await getSingleHotelService(hotelId)
         return res.status(200).json(hotel)
     } catch (e:any) {

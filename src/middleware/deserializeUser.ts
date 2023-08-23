@@ -4,6 +4,8 @@ import { verifyJwt } from "../utils/jwt.utils";
 import config from "config";
 import { reIssueAccessToken } from "../service/session.service";
 import { createCustomError } from "../errors/authentic.error";
+import { UnAuthorizedError } from "../errors/error.handler";
+import { Cookie } from "express-session";
 
 export async function deserializeUser (req:Request,res:Response,next:NextFunction) {
     const accessToken = get(req,"cookies.accessToken") || get(req,"headers.authorization","").replace(/^Bearer\s/,"")
@@ -11,12 +13,12 @@ export async function deserializeUser (req:Request,res:Response,next:NextFunctio
     const refreshToken = get(req,"cookies.refreshToken") || get(req,"headers.x-refresh")
 console.log("access", accessToken)
 console.log("refresh", refreshToken)
+console.log("req", req.headers)
     if(!accessToken){
+        //throw new UnAuthorizedError("Access denied, login")
         return next()
     }
     const {decoded, expired} = verifyJwt(accessToken)
-
-
     if(decoded){
         res.locals.user = decoded //assigns decoded to req.locals.user
         console.log("local",res.locals.user)

@@ -51,7 +51,7 @@ import { NotFoundError } from '../errors/error.handler';
     })//15mins
     //return a refresh and acesss token
 
-    return res.send({accessToken,refreshToken}) 
+    return res.status(201).json({accessToken,refreshToken}) 
     //return res.status(201).json(user)
  }
 
