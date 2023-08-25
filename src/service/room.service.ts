@@ -2,6 +2,7 @@ import { QueryResult } from "pg";
 import pool from "../utils/connect";
 import { RoomDocument, RoomNumberDocument } from "../models/room.model";
 import { addRoom, addRoomNumber, deleteRoomById, deleteRoomNumberById, getHotelId, getRoomById, getRoomNumber, getRoomNumberById, getRoomNumbers, getRooms, getUpdateID, isRoomUnique, updateHotelId, updateRoomById, updateRoomNumberById, updateRoom_id } from "../queries/room.queries";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
 
 
 export async function createRoomNumberService(room: RoomNumberDocument) {
@@ -47,22 +48,22 @@ export async function deleteRoomNumberService(input:RoomNumberDocument){
 export async function createRoomService(room: RoomDocument,hotelId:number,RoomNumberId: number) {
       const hotelExist:QueryResult = await pool.query(getHotelId,[hotelId])
     if( !hotelExist.rows.length){
-         return false
+         throw new UnAuthorizedError("Hotel does not exist")
      }
      const roomNumberExist:QueryResult = await pool.query(updateRoom_id,[RoomNumberId])
      if( !roomNumberExist.rows.length){
-          return false
+          throw new UnAuthorizedError("Room number does not exist")
       }
       const id = Number(roomNumberExist.rows[0].room_number_id)
     const checkRoom = await pool.query(isRoomUnique,[id])
     if(checkRoom.rows.length){
-      return false
+      throw new BadRequestError("Room is not unique")
     }
     const creatnewRoom = await  pool.query(addRoom,
       [room.title, room.price, room.max_people,room.description,id]
     );
     if(!creatnewRoom.rows.length){
-      return false
+      throw new NotFoundError("Room not created")
     }
     const hotelRoom = Number(creatnewRoom.rows[0].room_id)
     const updateHotel = await pool.query(updateHotelId,[hotelRoom,hotelId])

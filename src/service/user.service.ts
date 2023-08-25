@@ -175,13 +175,12 @@ export async function createUserResetPassword(input:UserInput,userId:number,toke
 
 export async function verifyUserOtp (input:string,otpEmail:string){
   const userExist = await pool.query(getUserByEmail,[otpEmail])
-  console.log("email", userExist.rows[0])
   if(!userExist.rows.length){
     throw new NotFoundError("Email does not exist")
   }
   const user = userExist.rows[0]
   if(!user.token) throw new ForBiddenError("Token not found")
-  if(Date.now() < user.token_expires_at) throw new BadRequestError("Token has expired")
+  if(Date.now() > user.token_expires_at) throw new BadRequestError("Token has expired")
   const isValid =  await bcrypt.compare(input,user.token)
   if(!isValid) throw new BadRequestError("Invalid token")
   const verifyUser = await pool.query(updateUserIsVerify,[otpEmail])
