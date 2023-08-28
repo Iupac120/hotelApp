@@ -1,4 +1,4 @@
-import {object,number,string,TypeOf} from "zod"
+import {object,number,string,TypeOf, array} from "zod"
 
 const payload = {
     body: object({
@@ -31,7 +31,7 @@ export const deleteProductSchema = object({
     ...params
 })
 
-export type CreateProductInput = TypeOf <typeof createProductSchema>
+export type CreateProductInput = Omit<TypeOf <typeof createProductSchema>,"body.user_id">
 export type UpdateProductInput = TypeOf <typeof updateProductSchema>
 export type GetProductInput = TypeOf <typeof getProductSchema>
 export type DeleteProductInput = TypeOf <typeof deleteProductSchema>

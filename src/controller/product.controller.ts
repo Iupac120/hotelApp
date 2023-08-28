@@ -53,10 +53,11 @@ import { NotBeforeError } from 'jsonwebtoken';
 import { NotFoundError } from '../errors/error.handler';
 
 export async function createProductHandler (req:Request<{},{},CreateProductInput['body']>,res:Response){
-     const userId = res.locals.user._id
+     const userId = res.locals.user.id
+     console.log("userId", userId)
      const body = req.body
      const product = await createProduct(body,userId)
-     return res.status(product)
+     return res.status(201).json(product)
 }
 
 export async function getAllProductHandler (req:Request<GetProductInput['params']>,res:Response){
