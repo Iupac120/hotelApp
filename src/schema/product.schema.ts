@@ -2,12 +2,12 @@ import {object,number,string,TypeOf, array} from "zod"
 
 const payload = {
     body: object({
-        user_id:number({required_error:"user_id is required"}),
+        //user_id:number({required_error:"user_id is required"}),
         title:string({required_error:"Title is required"}),
         type:string({required_error:"Type is required"}),
         description:string({required_error:"Description is required"}).min(6,"Descrition should be at least 6 character long"),
         price:number({required_error:"Price is required"}),
-        image:string({required_error:"Image is required"})
+        image:array(string({required_error:"Image is required"}))
     })
 }
 

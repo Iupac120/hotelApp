@@ -44,15 +44,16 @@ import config from "config"
 
 
 export interface ProductInput {
-        user_id:number
+       
         title:string
         type: string
         description: string
         price:number
-        image:string
+        image:string | string[]
 }
 
 export interface ProductDocument extends ProductInput { 
         created_at: Date
+        user_id:number
 }
 

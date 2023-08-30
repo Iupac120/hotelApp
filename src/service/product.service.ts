@@ -54,16 +54,18 @@ export async function findAllProduct (){
 export async function findProduct (productId:number, productTitle:ProductInput){
     const product = await pool.query(findProductQuery,[productId,productTitle.title])
     if(!product.rows.length) throw new NotFoundError("Product not found")
+    console.log("prodS", product.rows[0])
     return product.rows[0]
 }
 
-export async function updateProduct (userId: number, productId:number,input:ProductInput){
+export async function updateProduct (userId: number, productId:string,input:ProductInput){
     const adminExist = await pool.query(checkUserQuery,[userId])
+    console.log("admi",adminExist)
     if(!adminExist.rows.length) throw new UnAuthorizedError("Access denied")
     const product = await pool.query(findProductIdQuery,[productId])
     if(!product.rows.length) throw new NotFoundError("Product not found")
     const updateProd = await pool.query(updateProductQuery,[
-        input.title, input.type, input.description, input.price, input.image, input.user_id, productId
+        input.title, input.type, input.description, input.price, input.image, userId, productId
     ])
     if(!updateProd.rows.length) throw new BadRequestError("Failed to update")
     return updateProd.rows

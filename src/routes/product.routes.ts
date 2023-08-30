@@ -8,9 +8,9 @@ import { createProductSchema } from "../schema/product.schema";
 const router = express.Router()
 
 router.post("/",verifyAdmin,validate(createProductSchema),trycatchHandler(createProductHandler))
-router.get("/",getAllProductHandler)
-router.get("/:productId",getProductHandler)
-router.put("/:ProductId",updateProductHandler)
-router.delete("/:ProductId",deleteProductHandler)
+router.get("/",trycatchHandler(getAllProductHandler))
+router.get("/:productId",trycatchHandler(getProductHandler))
+router.put("/:ProductId",verifyAdmin,trycatchHandler(updateProductHandler))
+router.delete("/:ProductId",verifyAdmin,trycatchHandler(deleteProductHandler))
 
 export default router

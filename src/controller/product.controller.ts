@@ -63,24 +63,25 @@ export async function createProductHandler (req:Request<{},{},CreateProductInput
 export async function getAllProductHandler (req:Request<GetProductInput['params']>,res:Response){
      const product = await findAllProduct()
      if(!product){
-          return NotFoundError
+          throw new NotFoundError("Product not found")
      }
-     return res.send(product)
+     return res.status(200).json(product)
 }
 
 export async function getProductHandler (req:Request<GetProductInput['params']>,res:Response){
      const productId = Number(req.params.productId)
      const body = req.body
      const product = await findProduct(productId,body)
+     console.log("productC", product)
      if(!product){
-          return NotFoundError
+          throw new NotFoundError("Product not found")
      }
-     return res.send(product)
+     return res.status(200).json(product)
 }
 
 export async function updateProductHandler (req:Request<GetProductInput['params']>,res:Response){
      const userId = Number(res.locals.user._id)
-     const productId = Number(req.params.productId)
+     const productId = req.params.productId
      const body = req.body
      const product = await updateProduct(userId,productId,body)
      if(!product){
