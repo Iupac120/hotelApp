@@ -80,21 +80,23 @@ export async function getProductHandler (req:Request<GetProductInput['params']>,
 }
 
 export async function updateProductHandler (req:Request<GetProductInput['params']>,res:Response){
-     const userId = Number(res.locals.user._id)
-     const productId = req.params.productId
+     const userId = Number(res.locals.user.id)
+     console.log("no", userId)
+     const productId = Number(req.params.productId)
+     console.log("no", productId)
      const body = req.body
      const product = await updateProduct(userId,productId,body)
      if(!product){
-          return NotFoundError
+          throw new NotFoundError("Product not found")
      }
-     return res.send(product)
+     return res.status(201).json(product)
 }
 
 export async function deleteProductHandler(req:Request,res:Response){
-     const userId = Number(res.locals.user._id)
+     const userId = Number(res.locals.user.id)
      const productId = Number(req.params.productId)
      const product = await deleteProduct(userId,productId)
-     if(!product) return NotFoundError
-     return res.send(product)
+     if(!product) throw new NotFoundError("Product not found")
+     return res.status(200).json(product)
 }
 

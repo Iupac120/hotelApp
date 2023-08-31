@@ -58,23 +58,25 @@ export async function findProduct (productId:number, productTitle:ProductInput){
     return product.rows[0]
 }
 
-export async function updateProduct (userId: number, productId:string,input:ProductInput){
+export async function updateProduct (userId: number, productId:number,input:ProductInput){
     const adminExist = await pool.query(checkUserQuery,[userId])
-    console.log("admi",adminExist)
     if(!adminExist.rows.length) throw new UnAuthorizedError("Access denied")
+    console.log("admi",adminExist.rows[0])
     const product = await pool.query(findProductIdQuery,[productId])
     if(!product.rows.length) throw new NotFoundError("Product not found")
+    console.log("pro", product.rows[0])
     const updateProd = await pool.query(updateProductQuery,[
         input.title, input.type, input.description, input.price, input.image, userId, productId
     ])
+    console.log("up", updateProd.rows[0])
     if(!updateProd.rows.length) throw new BadRequestError("Failed to update")
     return updateProd.rows
 }
 
 export async function deleteProduct (userId:number, productId:number){
     const adminExist = await pool.query(checkUserQuery,[userId])
-    if(!adminExist.rows.length) throw new UnAuthorizedError("Access denioed")
+    if(!adminExist.rows.length) throw new UnAuthorizedError("Access denied")
     const deleteProd =  await pool.query(deleteProductQuery,[productId])
-    if(!deleteProd.rows.length) throw new BadRequestError("Failed to update")
+console.log("one",deleteProd.rows[0])
     return deleteProd.rows[0]
 }

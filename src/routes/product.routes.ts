@@ -10,7 +10,7 @@ const router = express.Router()
 router.post("/",verifyAdmin,validate(createProductSchema),trycatchHandler(createProductHandler))
 router.get("/",trycatchHandler(getAllProductHandler))
 router.get("/:productId",trycatchHandler(getProductHandler))
-router.put("/:ProductId",verifyAdmin,trycatchHandler(updateProductHandler))
-router.delete("/:ProductId",verifyAdmin,trycatchHandler(deleteProductHandler))
+router.put("/:productId",verifyAdmin,validate(createProductSchema),trycatchHandler(updateProductHandler))
+router.delete("/:productId",verifyAdmin,trycatchHandler(deleteProductHandler))
 
 export default router
