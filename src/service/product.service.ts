@@ -77,6 +77,5 @@ export async function deleteProduct (userId:number, productId:number){
     const adminExist = await pool.query(checkUserQuery,[userId])
     if(!adminExist.rows.length) throw new UnAuthorizedError("Access denied")
     const deleteProd =  await pool.query(deleteProductQuery,[productId])
-console.log("one",deleteProd.rows[0])
     return deleteProd.rows[0]
 }

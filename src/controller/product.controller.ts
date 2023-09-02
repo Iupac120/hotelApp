@@ -81,9 +81,7 @@ export async function getProductHandler (req:Request<GetProductInput['params']>,
 
 export async function updateProductHandler (req:Request<GetProductInput['params']>,res:Response){
      const userId = Number(res.locals.user.id)
-     console.log("no", userId)
      const productId = Number(req.params.productId)
-     console.log("no", productId)
      const body = req.body
      const product = await updateProduct(userId,productId,body)
      if(!product){
@@ -96,7 +94,6 @@ export async function deleteProductHandler(req:Request,res:Response){
      const userId = Number(res.locals.user.id)
      const productId = Number(req.params.productId)
      const product = await deleteProduct(userId,productId)
-     if(!product) throw new NotFoundError("Product not found")
-     return res.status(200).json(product)
+     return res.status(200).json({message:"product deleted"})
 }
 

@@ -14,8 +14,9 @@ interface CustomRequest extends Request {
 
 export async function CartTotalHandler(req: CustomRequest, res: Response) {
   const cart: CartItem[] = req.session.cart || [];
-  const cartTotal = calculateCartTotal(cart);
-  return cartTotal;
+  const cartTotal = await calculateCartTotal(cart);
+  console.log("cart",cartTotal)
+  return res.status(200).json(cartTotal);
 }
 
 export async function removeFromCartHandler(req: CustomRequest, res: Response) {
@@ -53,3 +54,4 @@ export async function addToCartHandler(req: CustomRequest, res: Response) {
   req.session.cart = cart;
   res.send('Item added to the cart successfully!');
 }
+

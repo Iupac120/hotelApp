@@ -11,8 +11,8 @@ import hotelRoute from './routes/hotel.routes';
 import roomRoute from './routes/room.routes';
 import usersRoute from './routes/users.routes';
 import productRoute from './routes/product.routes';
-import cartRoute from './routes/users.routes';
-import orderRoute from './routes/users.routes';
+import cartRoute from './routes/session.routes';
+import orderRoute from './routes/order.routes';
 import uploadImageRoute from "./routes/image.routes"
 import passportRoute from "./routes/passport.routes"
 import cors from 'cors';
