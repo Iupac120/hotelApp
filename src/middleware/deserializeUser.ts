@@ -26,7 +26,8 @@ console.log("req", req.headers)
     }
 
     if(expired && refreshToken){
-        let newAccessToken:any  = await reIssueAccessToken(refreshToken)
+        console.log("refresh",refreshToken)
+        let newAccessToken:any  = await reIssueAccessToken(refreshToken,req)
         console.log("type",typeof(newAccessToken))
         if(typeof newAccessToken === "string"){
             res.setHeader("x-access-token",newAccessToken)

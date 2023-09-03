@@ -42,7 +42,7 @@ import { signJwt } from '../utils/jwt.utils';
 
 import {Cart, CartItem, CartTotal} from "../models/session.model"
 import { UnAuthorizedError } from '../errors/error.handler';
-import { findSession } from '../queries/session.queries';
+//import { findSession } from '../queries/session.queries';
 import { findUserSession } from '../queries/auth.queries';
 
 export async function calculateCartTotal(cart: Cart) {
@@ -64,14 +64,19 @@ export async function calculateCartTotal(cart: Cart) {
   }
   
   
-  export async function reIssueAccessToken({refreshToken}:{refreshToken:string}){
-    const {decoded}  = verifyJwt(refreshToken)
+  export async function reIssueAccessToken(refreshToken:string,req:Request){
+    console.log("decodedRefresh",refreshToken)
+    const decoded  = verifyJwt(refreshToken)
     console.log("decoded",decoded)
     if(!decoded) throw new UnAuthorizedError("Token does not exist");
-    const id = decoded?.id
-    const user = await pool.query(findUserSession,)
-    if(!user) return false
-    const accesToken = signJwt({...user,session:session._id},{
+    const {id}:any = decoded.decoded
+    console.log("id", id)
+    const user = await pool.query(findUserSession,[id])
+    if(!user) throw new UnAuthorizedError("User does not exist")
+    console.log("user",user.rows[0])
+    const newuser = user.rows[0] 
+    const userAgent = req.get("user-agent") || "";
+    const accesToken = signJwt({...newuser,id:newuser.user_id,isAdmin:newuser.is_admin,userAgent},{
         expiresIn:config.get("accessTokenTtl")
     })
     return accesToken
