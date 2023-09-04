@@ -4,7 +4,6 @@ import {Express,Request,Response} from 'express';
 import {/*createUserHandler,*/  deleteUser, getAllUsers, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller";
 import validateResource from '../middleware/validateResources';
 import { createUserSchema } from '../schema/user.schema';
-import { createUserSesionHandler, deleteUserSessionHandler, getUserSesionHandler } from '../controller/session.controller';
 import { createSessionSchema } from '../schema/session.schema';
 import requireUser from '../middleware/requireUser';
 import { createProductHandler, deleteProductHandler, getProductHandler, updateProductHandler } from '../controller/product.controller';

@@ -5,6 +5,9 @@ import { deleteOrderQuery, findAllOrderQuery, findOrderIdQuery, findOrderQuery, 
 import { addProductQuery, checkUserQuery, deleteProductQuery, findAllProductQuery, findProductIdQuery, findProductQuery, updateProductQuery } from "../queries/product.queries";
 import pool from "../utils/connect";
 
+// export async function createOrder(){
+//     const getOrder = await pool.query()
+// }
 
 
 export async function findAllOrder (){
@@ -25,7 +28,7 @@ export async function updateOrder (userId: number, orderId:number,input:ProductI
     const order = await pool.query(findOrderIdQuery,[orderId])
     if(!order.rows.length) return NotFoundError
     const updateProd = await pool.query(updateOrderQuery,[
-        input.title, input.type, input.description, input.price, input.image, input.user_id, orderId
+        input.title, input.type, input.description, input.price, input.image, userId, orderId
     ])
     if(!updateProd.rows.length) return BadRequestError
     return updateProd.rows
