@@ -1,5 +1,4 @@
 
-import { FilterQuery, UpdateQuery } from 'mongoose';
 //import sessionModel,{SessionDocument} from '../models/session.model';
 import { verifyJwt } from '../utils/jwt.utils';
 import {Request,Response} from "express"

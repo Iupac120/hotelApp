@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteProductQuery = exports.updateProductQuery = exports.findProductIdQuery = exports.findProductQuery = exports.findAllProductQuery = exports.addProductQuery = exports.checkUserQuery = void 0;
+exports.checkUserQuery = "SELECT * FROM users WHERE user_id = $1";
+exports.addProductQuery = "INSERT INTO product (title, type, description, price, image, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+exports.findAllProductQuery = "SELECT * FROM product";
+exports.findProductQuery = "SELECT * FROM product WHERE product_id = $1";
+exports.findProductIdQuery = "SELECT * FROM product WHERE product_id = $1";
+exports.updateProductQuery = "UPDATE product SET title = $1, type = $2, description = $3, price = $4, image = $5, user_id = $6 WHERE product_id = $7 RETURNING *";
+exports.deleteProductQuery = "DELETE FROM product WHERE product_id = $1";
