@@ -28,7 +28,7 @@ const app = express();
 app.use(express.json())
 app.use(express.static('public'))
 app.use(cors({
-    origin:config.get('origin'),
+    origin:config.get('origin') ,
     credentials: true
 }))
 app.set("view engine","ejs")
