@@ -15,7 +15,16 @@ const params = {
         productId: (0, zod_1.string)({ required_error: "Product id is required" })
     })
 };
-exports.createProductSchema = (0, zod_1.object)(Object.assign({}, payload));
-exports.updateProductSchema = (0, zod_1.object)(Object.assign(Object.assign({}, payload), params));
-exports.getProductSchema = (0, zod_1.object)(Object.assign({}, params));
-exports.deleteProductSchema = (0, zod_1.object)(Object.assign({}, params));
+exports.createProductSchema = (0, zod_1.object)({
+    ...payload
+});
+exports.updateProductSchema = (0, zod_1.object)({
+    ...payload,
+    ...params
+});
+exports.getProductSchema = (0, zod_1.object)({
+    ...params
+});
+exports.deleteProductSchema = (0, zod_1.object)({
+    ...params
+});

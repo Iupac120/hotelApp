@@ -32,5 +32,5 @@ exports.default = {
     pass: process.env.NODEMAILER_PASS,
     emailedFrom: process.env.EmailedFrom,
     stripe: process.env.STRIPE,
-    connectionString: process.env.databaseString
+    //connectionString:process.env.databaseString
 };

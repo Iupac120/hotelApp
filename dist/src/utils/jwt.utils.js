@@ -9,7 +9,10 @@ const config_1 = __importDefault(require("config"));
 const privateKey = config_1.default.get("privateKey");
 const publicKey = config_1.default.get("publicKey");
 function signJwt(object, options) {
-    return jsonwebtoken_1.default.sign(object, privateKey, Object.assign(Object.assign({}, (options && options)), { algorithm: "RS256" }));
+    return jsonwebtoken_1.default.sign(object, privateKey, {
+        ...(options && options),
+        algorithm: "RS256"
+    });
 }
 exports.signJwt = signJwt;
 function verifyJwt(token) {
