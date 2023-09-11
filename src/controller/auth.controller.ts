@@ -34,7 +34,7 @@ import { NotFoundError } from '../errors/error.handler';
     //store access and refresh token in cookie
     res.cookie("accessToken",accessToken,{
         httpOnly: true,
-        domain:config.get("localhost"),
+        //domain:config.get("localhost"),
         path:config.get("path"),
         sameSite: "strict", 
         secure: false,//production is true 
@@ -43,7 +43,7 @@ import { NotFoundError } from '../errors/error.handler';
 
     res.cookie("refreshToken",refreshToken,{
         httpOnly: true,
-        domain:config.get("localhost"),
+        //domain:config.get("localhost"),
         path:config.get("path"),
         sameSite: "strict", 
         secure: false,//production is true 

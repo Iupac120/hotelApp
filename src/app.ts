@@ -27,10 +27,12 @@ import { errorHandler } from './errors/error.handler';
 const app = express();
 app.use(express.json())
 app.use(express.static('public'))
-app.use(cors({
-    origin:config.get('origin') ,
-    credentials: true
-}))
+app.use(cors(
+//     {
+//     origin:config.get('origin') ,
+//     credentials: true
+// }
+))
 app.set("view engine","ejs")
 app.set("views", path.join(__dirname,"views"))
 const sessionStore = pgSession(expressSession)

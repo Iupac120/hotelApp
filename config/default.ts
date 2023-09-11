@@ -2,15 +2,15 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default {   
-    dbUri:process.env.DBURI,
+    //dbUri:process.env.DBURI,
     pguser:process.env.PGUSER,
     pgpassword:process.env.PGPASSWORD,
     pghost:process.env.PGHOST,
     pgport:process.env.PGPORT,
     pgdatabase:process.env.PGDATABASE,
-    port:process.env.PORT || 5000,
-    origin:process.env.ORIGIN,
-    localhost:process.env.LOCALHOST,
+    //port:process.env.PORT || 5000,
+    //origin:process.env.ORIGIN,
+    //localhost:process.env.LOCALHOST,
     url:process.env.URL,
     path:process.env.PATH,
     saltWorkFactor:10,//process.env.SALTWORKFACTOR,
