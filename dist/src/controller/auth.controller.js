@@ -44,7 +44,7 @@ function loginUserHandler(req, res, next) {
         //store access and refresh token in cookie
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            domain: config_1.default.get("localhost"),
+            //domain:config.get("localhost"),
             path: config_1.default.get("path"),
             sameSite: "strict",
             secure: false,
@@ -52,7 +52,7 @@ function loginUserHandler(req, res, next) {
         }); //15mins
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            domain: config_1.default.get("localhost"),
+            //domain:config.get("localhost"),
             path: config_1.default.get("path"),
             sameSite: "strict",
             secure: false,

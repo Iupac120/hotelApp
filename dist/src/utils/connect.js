@@ -19,11 +19,12 @@ const logger_1 = __importDefault(require("./logger"));
 const pg_1 = require("pg");
 const config_1 = __importDefault(require("config"));
 const pool = new pg_1.Pool({
-    user: config_1.default.get("pguser"),
-    password: config_1.default.get("pgpassword"),
-    host: config_1.default.get("pghost"),
-    port: config_1.default.get("pgport"),
-    database: config_1.default.get("pgdatabase")
+    // user:config.get("pguser"),
+    // password:config.get("pgpassword"),
+    // host:config.get("pghost"),
+    // port:config.get("pgport"),
+    // database:config.get("pgdatabase")
+    connectionString: config_1.default.get("conectionString")
 });
 if (pool) {
     logger_1.default.info('connected to postgres db');

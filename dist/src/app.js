@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const config_1 = __importDefault(require("config"));
 const morgan_1 = __importDefault(require("morgan"));
 const connect_1 = __importDefault(require("./utils/connect"));
 const logger_1 = __importDefault(require("./utils/logger"));
@@ -38,10 +37,12 @@ const error_handler_1 = require("./errors/error.handler");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.static('public'));
-app.use((0, cors_1.default)({
-    origin: config_1.default.get('origin'),
-    credentials: true
-}));
+app.use((0, cors_1.default)(
+//     {
+//     origin:config.get('origin') ,
+//     credentials: true
+// }
+));
 app.set("view engine", "ejs");
 app.set("views", path_1.default.join(__dirname, "views"));
 const sessionStore = (0, connect_pg_simple_1.default)(express_session_1.default);

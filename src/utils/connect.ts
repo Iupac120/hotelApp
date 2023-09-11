@@ -24,6 +24,7 @@ const pool = new Pool({
             host:config.get("pghost"),
             port:config.get("pgport"),
             database:config.get("pgdatabase")
+            //connectionString:config.get<string>("conectionString")
         })  
 if (pool){
     logger.info('connected to postgres db')

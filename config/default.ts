@@ -27,5 +27,6 @@ export default {
     user:process.env.NODEMAILER_USER,
     pass:process.env.NODEMAILER_PASS,
     emailedFrom:process.env.EmailedFrom,    
-    stripe:process.env.STRIPE
+    stripe:process.env.STRIPE,
+    //connectionString:process.env.databaseString
 };

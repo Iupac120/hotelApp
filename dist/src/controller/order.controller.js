@@ -23,7 +23,7 @@ dotenv_1.default.config();
 const order_service_1 = require("../service/order.service");
 // Create a Stripe instance
 const stripe = new stripe_1.default(config_1.default.get("stripe"), {
-    apiVersion: '2022-11-15', // Use the latest API version
+    apiVersion: '2023-08-16', // Use the latest API version
 });
 //checkout route
 function checkout(req, res) {

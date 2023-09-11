@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.default = {
-    dbUri: process.env.DBURI,
+    //dbUri:process.env.DBURI,
     pguser: process.env.PGUSER,
     pgpassword: process.env.PGPASSWORD,
     pghost: process.env.PGHOST,
     pgport: process.env.PGPORT,
     pgdatabase: process.env.PGDATABASE,
-    port: process.env.PORT || 5000,
-    origin: process.env.ORIGIN,
-    localhost: process.env.LOCALHOST,
+    //port:process.env.PORT || 5000,
+    //origin:process.env.ORIGIN,
+    //localhost:process.env.LOCALHOST,
     url: process.env.URL,
     path: process.env.PATH,
     saltWorkFactor: 10,
@@ -31,5 +31,6 @@ exports.default = {
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASS,
     emailedFrom: process.env.EmailedFrom,
-    stripe: process.env.STRIPE
+    stripe: process.env.STRIPE,
+    connectionString: process.env.databaseString
 };
