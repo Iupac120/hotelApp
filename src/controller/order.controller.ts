@@ -25,7 +25,7 @@ interface CustomRequest extends Request {
 
 // Create a Stripe instance
 const stripe = new Stripe(config.get<string>("stripe"), {
-  apiVersion: '2022-11-15', // Use the latest API version
+  apiVersion: '2023-08-16', // Use the latest API version
 });
 
 //checkout route
