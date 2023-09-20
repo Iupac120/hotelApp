@@ -5,7 +5,7 @@ import pool from './utils/connect.js';
 import connect from './utils/connect.js'
 //import logger from './utils/logger.js';
 import expressSession from "express-session";
-import pgSession from "connect-pg-simple"
+//import pgSession from "connect-pg-simple"
 //import pgPoolSession from "connect-pg-pool"
 import authRoute from './routes/auth.routes.js';
 import hotelRoute from './routes/hotel.routes.js';
@@ -37,18 +37,18 @@ app.use(cors(
 app.set("view engine","ejs")
 app.set("views", path.join(__dirname,"views"))
 
- const sessionStore = pgSession(expressSession)
- const store = new sessionStore({
-     pool,
-     tableName:'session'
- })
+//  const sessionStore = pgSession(expressSession)
+//  const store = new sessionStore({
+//      pool,
+//      tableName:'session'
+//  })
 //const sessionStore = pgPoolSession(expressSession)
 app.use(cookieParser())
 app.use(expressSession({
     secret:'Iupac120',
     resave: true,
     saveUninitialized: true,
-    store:store,
+    //store:store,
     cookie:{secure:false}//secure should be true on production when using http
 }))
 
