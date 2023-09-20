@@ -29,21 +29,21 @@
 // export async function findUser (query:FilterQuery<UserDocument>){
 //     return UserModel.findOne(query).lean()
 // }
-import pool from "../utils/connect";
+import pool from "../utils/connect.js";
 import bcrypt from "bcrypt";
-import { UserDocument, UserInput } from '../models/user.model';
-import { addUser, checkEmail } from '../queries/auth.queries';
+import { UserDocument, UserInput } from '../models/user.model.js';
+import { addUser, checkEmail } from '../queries/auth.queries.js';
 import config from "config";
 import * as crypto from "crypto"
 
 import { QueryResult } from "pg";
-import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
-import { HotelDocument } from "../models/hotel.model";
-import {  deleteUserById, getOtpByEmail, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserIsVerify, updateUserPassword, updateUserResetToken, updateUserToken } from "../queries/user.queries";
-import { BadRequestError, ForBiddenError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
+import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries.js";
+import { HotelDocument } from "../models/hotel.model.js";
+import {  deleteUserById, getOtpByEmail, getUserByEmail, getUserById, getUsers, updateTokenByQuery, updateUserById, updateUserIsVerify, updateUserPassword, updateUserResetToken, updateUserToken } from "../queries/user.queries.js";
+import { BadRequestError, ForBiddenError, NotFoundError, UnAuthorizedError } from "../errors/error.handler.js";
 import jwt from "jsonwebtoken"
-import { sendEmail } from "../utils/mailer.utils";
-import { generateOtp } from "../utils/random.utils";
+import { sendEmail } from "../utils/mailer.utils.js";
+import { generateOtp } from "../utils/random.utils.js";
 
 
 export async function createUser(user: UserInput) {

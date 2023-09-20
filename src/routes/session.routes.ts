@@ -1,5 +1,5 @@
 import express from 'express'
-import { CartTotalHandler, addToCartHandler, removeFromCartHandler/*, removeSingleItemCartHandler, updateCartQuantityHandler*/ } from '../controller/session.controller'
+import { CartTotalHandler, addToCartHandler, removeFromCartHandler/*, removeSingleItemCartHandler, updateCartQuantityHandler*/ } from '../controller/session.controller.js'
 const router = express.Router()
 
 

@@ -4,14 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyAdmin = exports.verifyUser = exports.deserializeUser = void 0;
-const lodash_1 = require("lodash"); //to get a property that your not certain it exists
-const jwt_utils_1 = require("../utils/jwt.utils");
+const lodash_1 = __importDefault(require("lodash")); //to get a property that your not certain it exists
+const { get } = lodash_1.default; //to get a property that your not certain it exists
+const jwt_utils_js_1 = require("../utils/jwt.utils.js");
 const config_1 = __importDefault(require("config"));
-const session_service_1 = require("../service/session.service");
-const authentic_error_1 = require("../errors/authentic.error");
+const session_service_js_1 = require("../service/session.service.js");
+const authentic_error_js_1 = require("../errors/authentic.error.js");
 async function deserializeUser(req, res, next) {
-    const accessToken = (0, lodash_1.get)(req, "cookies.accessToken") || (0, lodash_1.get)(req, "headers.authorization", "").replace(/^Bearer\s/, "");
-    const refreshToken = (0, lodash_1.get)(req, "cookies.refreshToken") || (0, lodash_1.get)(req, "headers.x-refresh");
+    const accessToken = get(req, "cookies.accessToken") || get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
+    const refreshToken = get(req, "cookies.refreshToken") || get(req, "headers.x-refresh");
     console.log("access", accessToken);
     console.log("refresh", refreshToken);
     console.log("req", req.headers);
@@ -19,7 +20,7 @@ async function deserializeUser(req, res, next) {
         //throw new UnAuthorizedError("Access denied, login")
         return next();
     }
-    const { decoded, expired } = (0, jwt_utils_1.verifyJwt)(accessToken);
+    const { decoded, expired } = (0, jwt_utils_js_1.verifyJwt)(accessToken);
     if (decoded) {
         res.locals.user = decoded; //assigns decoded to req.locals.user
         console.log("local", res.locals.user);
@@ -27,7 +28,7 @@ async function deserializeUser(req, res, next) {
     }
     if (expired && refreshToken) {
         console.log("refresh", refreshToken);
-        let newAccessToken = await (0, session_service_1.reIssueAccessToken)(refreshToken, req);
+        let newAccessToken = await (0, session_service_js_1.reIssueAccessToken)(refreshToken, req);
         console.log("type", typeof (newAccessToken));
         if (typeof newAccessToken === "string") {
             res.setHeader("x-access-token", newAccessToken);
@@ -40,7 +41,7 @@ async function deserializeUser(req, res, next) {
                 maxAge: 900000
             }); //15mins
         }
-        const result = (0, jwt_utils_1.verifyJwt)(newAccessToken);
+        const result = (0, jwt_utils_js_1.verifyJwt)(newAccessToken);
         res.locals.user = result.decoded;
         return next();
     }
@@ -53,7 +54,7 @@ async function verifyUser(req, res, next) {
             return next();
         }
         else {
-            return next((0, authentic_error_1.createCustomError)("You are not authenticated", 401));
+            return next((0, authentic_error_js_1.createCustomError)("You are not authenticated", 401));
         }
     });
 }
@@ -65,7 +66,7 @@ async function verifyAdmin(req, res, next) {
             return next();
         }
         else {
-            return next((0, authentic_error_1.createCustomError)("You are not authenticated", 401));
+            return next((0, authentic_error_js_1.createCustomError)("You are not authenticated", 401));
         }
     });
 }

@@ -1,8 +1,8 @@
 import { QueryResult } from "pg";
-import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries";
-import pool from "../utils/connect";
-import { HotelDocument } from "../models/hotel.model";
-import { BadRequestError, UnAuthorizedError } from "../errors/error.handler";
+import { addHotel, checkName, deleteHotelById, getHotelById, getHotels, updateHotelById } from "../queries/hotel.queries.js";
+import pool from "../utils/connect.js";
+import { HotelDocument } from "../models/hotel.model.js";
+import { BadRequestError, UnAuthorizedError } from "../errors/error.handler.js";
 
 
 export async function createHotelService(hotel: HotelDocument) {

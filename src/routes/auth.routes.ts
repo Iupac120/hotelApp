@@ -1,8 +1,8 @@
 import {Router} from "express";
-import { createPasswordHandler, createResetOtpHandler, createResetPasswordHandler, createUserHandler, getPasswordHandler, getResetPasswordHandler, loginUserHandler, logout, verifyUserOtpHandler } from "../controller/auth.controller";
-import { trycatchHandler } from "../utils/trycatch.handler";
-import validate from "../middleware/validateResources";
-import { createUserSchema, otpVerifySchema, resetPasswordSchema, userEmailSchema } from "../schema/user.schema";
+import { createPasswordHandler, createResetOtpHandler, createResetPasswordHandler, createUserHandler, getPasswordHandler, getResetPasswordHandler, loginUserHandler, logout, verifyUserOtpHandler } from "../controller/auth.controller.js";
+import { trycatchHandler } from "../utils/trycatch.handler.js";
+import validate from "../middleware/validateResources.js";
+import { createUserSchema, otpVerifySchema, resetPasswordSchema, userEmailSchema } from "../schema/user.schema.js";
 const router = Router()
     //auth routes
 router.post("/register",validate(createUserSchema),trycatchHandler(createUserHandler))

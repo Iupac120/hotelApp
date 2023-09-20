@@ -45,20 +45,20 @@ exports.deleteProductHandler = exports.updateProductHandler = exports.getProduct
 //     await deleteProduct({productId})
 //     return res.sendStatus(200) 
 // }
-const product_service_1 = require("../service/product.service");
-const error_handler_1 = require("../errors/error.handler");
+const product_service_js_1 = require("../service/product.service.js");
+const error_handler_js_1 = require("../errors/error.handler.js");
 async function createProductHandler(req, res) {
     const userId = res.locals.user.id;
     console.log("userId", userId);
     const body = req.body;
-    const product = await (0, product_service_1.createProduct)(body, userId);
+    const product = await (0, product_service_js_1.createProduct)(body, userId);
     return res.status(201).json(product);
 }
 exports.createProductHandler = createProductHandler;
 async function getAllProductHandler(req, res) {
-    const product = await (0, product_service_1.findAllProduct)();
+    const product = await (0, product_service_js_1.findAllProduct)();
     if (!product) {
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     }
     return res.status(200).json(product);
 }
@@ -66,10 +66,10 @@ exports.getAllProductHandler = getAllProductHandler;
 async function getProductHandler(req, res) {
     const productId = Number(req.params.productId);
     const body = req.body;
-    const product = await (0, product_service_1.findProduct)(productId, body);
+    const product = await (0, product_service_js_1.findProduct)(productId, body);
     console.log("productC", product);
     if (!product) {
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     }
     return res.status(200).json(product);
 }
@@ -78,9 +78,9 @@ async function updateProductHandler(req, res) {
     const userId = Number(res.locals.user.id);
     const productId = Number(req.params.productId);
     const body = req.body;
-    const product = await (0, product_service_1.updateProduct)(userId, productId, body);
+    const product = await (0, product_service_js_1.updateProduct)(userId, productId, body);
     if (!product) {
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     }
     return res.status(201).json(product);
 }
@@ -88,7 +88,7 @@ exports.updateProductHandler = updateProductHandler;
 async function deleteProductHandler(req, res) {
     const userId = Number(res.locals.user.id);
     const productId = Number(req.params.productId);
-    const product = await (0, product_service_1.deleteProduct)(userId, productId);
+    const product = await (0, product_service_js_1.deleteProduct)(userId, productId);
     return res.status(200).json({ message: "product deleted" });
 }
 exports.deleteProductHandler = deleteProductHandler;

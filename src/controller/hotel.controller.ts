@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
-import { createHotelService,updateHotelService, deleteHotelService,getAllHotelsService,getSingleHotelService } from "../service/hotel.service";
-import { getHotelInput } from "../schema/hotel.schema";
+import { createHotelService,updateHotelService, deleteHotelService,getAllHotelsService,getSingleHotelService } from "../service/hotel.service.js";
+import { getHotelInput } from "../schema/hotel.schema.js";
 //import { createHotelInput, getHotelInput } from "../schema/hotel.schema";
 
 export async function createHotel (req:Request,res:Response){

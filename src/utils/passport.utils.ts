@@ -1,9 +1,9 @@
 import passport from "passport";
 import config from "config"
-import pool from "../utils/connect";
+import pool from "../utils/connect.js";
 import {Strategy as GoogleStrategy} from "passport-google-oauth20"
 import {Strategy as FacebookStrategy} from "passport-facebook";
-import { addFacebookUser, addGoogleUser, getUserById } from "../queries/passport.queries";
+import { addFacebookUser, addGoogleUser, getUserById } from "../queries/passport.queries.js";
 
 
 passport.use(new GoogleStrategy({

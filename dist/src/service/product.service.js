@@ -26,63 +26,63 @@ exports.deleteProduct = exports.updateProduct = exports.findProduct = exports.fi
 // export async function deleteProduct (query:FilterQuery<ProductDocument>){
 //     return productModel.deleteOne(query)
 // }
-const error_handler_1 = require("../errors/error.handler");
-const product_queries_1 = require("../queries/product.queries");
-const connect_1 = __importDefault(require("../utils/connect"));
+const error_handler_js_1 = require("../errors/error.handler.js");
+const product_queries_js_1 = require("../queries/product.queries.js");
+const connect_js_1 = __importDefault(require("../utils/connect.js"));
 async function createProduct(input, userId) {
-    const adminExist = await connect_1.default.query(product_queries_1.checkUserQuery, [userId]);
+    const adminExist = await connect_js_1.default.query(product_queries_js_1.checkUserQuery, [userId]);
     if (!adminExist.rows.length) {
-        throw new error_handler_1.UnAuthorizedError("Only admit can create product");
+        throw new error_handler_js_1.UnAuthorizedError("Only admit can create product");
     }
     console.log("one");
-    const product = await connect_1.default.query(product_queries_1.addProductQuery, [input.title, input.type, input.description, input.price, input.image, userId]);
+    const product = await connect_js_1.default.query(product_queries_js_1.addProductQuery, [input.title, input.type, input.description, input.price, input.image, userId]);
     console.log("one", product.rows[0]);
     if (!product.rows.length) {
         console.log("one");
-        throw new error_handler_1.BadRequestError("product not found");
+        throw new error_handler_js_1.BadRequestError("product not found");
     }
     console.log("one");
     return product.rows[0];
 }
 exports.createProduct = createProduct;
 async function findAllProduct() {
-    const product = await connect_1.default.query(product_queries_1.findAllProductQuery);
+    const product = await connect_js_1.default.query(product_queries_js_1.findAllProductQuery);
     if (!product.rows.length)
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     return product.rows;
 }
 exports.findAllProduct = findAllProduct;
 async function findProduct(productId, productTitle) {
-    const product = await connect_1.default.query(product_queries_1.findProductQuery, [productId, productTitle.title]);
+    const product = await connect_js_1.default.query(product_queries_js_1.findProductQuery, [productId, productTitle.title]);
     if (!product.rows.length)
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     console.log("prodS", product.rows[0]);
     return product.rows[0];
 }
 exports.findProduct = findProduct;
 async function updateProduct(userId, productId, input) {
-    const adminExist = await connect_1.default.query(product_queries_1.checkUserQuery, [userId]);
+    const adminExist = await connect_js_1.default.query(product_queries_js_1.checkUserQuery, [userId]);
     if (!adminExist.rows.length)
-        throw new error_handler_1.UnAuthorizedError("Access denied");
+        throw new error_handler_js_1.UnAuthorizedError("Access denied");
     console.log("admi", adminExist.rows[0]);
-    const product = await connect_1.default.query(product_queries_1.findProductIdQuery, [productId]);
+    const product = await connect_js_1.default.query(product_queries_js_1.findProductIdQuery, [productId]);
     if (!product.rows.length)
-        throw new error_handler_1.NotFoundError("Product not found");
+        throw new error_handler_js_1.NotFoundError("Product not found");
     console.log("pro", product.rows[0]);
-    const updateProd = await connect_1.default.query(product_queries_1.updateProductQuery, [
+    const updateProd = await connect_js_1.default.query(product_queries_js_1.updateProductQuery, [
         input.title, input.type, input.description, input.price, input.image, userId, productId
     ]);
     console.log("up", updateProd.rows[0]);
     if (!updateProd.rows.length)
-        throw new error_handler_1.BadRequestError("Failed to update");
+        throw new error_handler_js_1.BadRequestError("Failed to update");
     return updateProd.rows;
 }
 exports.updateProduct = updateProduct;
 async function deleteProduct(userId, productId) {
-    const adminExist = await connect_1.default.query(product_queries_1.checkUserQuery, [userId]);
+    const adminExist = await connect_js_1.default.query(product_queries_js_1.checkUserQuery, [userId]);
     if (!adminExist.rows.length)
-        throw new error_handler_1.UnAuthorizedError("Access denied");
-    const deleteProd = await connect_1.default.query(product_queries_1.deleteProductQuery, [productId]);
+        throw new error_handler_js_1.UnAuthorizedError("Access denied");
+    const deleteProd = await connect_js_1.default.query(product_queries_js_1.deleteProductQuery, [productId]);
     return deleteProd.rows[0];
 }
 exports.deleteProduct = deleteProduct;

@@ -1,8 +1,8 @@
 import { QueryResult } from "pg";
-import pool from "../utils/connect";
-import { RoomDocument, RoomNumberDocument } from "../models/room.model";
-import { addRoom, addRoomNumber, deleteRoomById, deleteRoomNumberById, getHotelId, getRoomById, getRoomNumber, getRoomNumberById, getRoomNumbers, getRooms, getUpdateID, isRoomUnique, updateHotelId, updateRoomById, updateRoomNumberById, updateRoom_id } from "../queries/room.queries";
-import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
+import pool from "../utils/connect.js";
+import { RoomDocument, RoomNumberDocument } from "../models/room.model.js";
+import { addRoom, addRoomNumber, deleteRoomById, deleteRoomNumberById, getHotelId, getRoomById, getRoomNumber, getRoomNumberById, getRoomNumbers, getRooms, getUpdateID, isRoomUnique, updateHotelId, updateRoomById, updateRoomNumberById, updateRoom_id } from "../queries/room.queries.js";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler.js";
 
 
 export async function createRoomNumberService(room: RoomNumberDocument) {

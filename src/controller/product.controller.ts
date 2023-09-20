@@ -1,5 +1,5 @@
  import {Request,Response} from 'express'
- import { CreateProductInput, DeleteProductInput, GetProductInput, UpdateProductInput } from '../schema/product.schema';
+ import { CreateProductInput, DeleteProductInput, GetProductInput, UpdateProductInput } from '../schema/product.schema.js';
 // import { createProduct, deleteProduct, findAndUpdateProduct, findProduct } from '../service/product.service';
 
 
@@ -48,9 +48,9 @@
 //     return res.sendStatus(200) 
 // }
 
-import { createProduct, deleteProduct, findAllProduct, findProduct, updateProduct } from "../service/product.service"
+import { createProduct, deleteProduct, findAllProduct, findProduct, updateProduct } from "../service/product.service.js"
 import { NotBeforeError } from 'jsonwebtoken';
-import { NotFoundError } from '../errors/error.handler';
+import { NotFoundError } from '../errors/error.handler.js';
 
 export async function createProductHandler (req:Request<{},{},CreateProductInput['body']>,res:Response){
      const userId = res.locals.user.id

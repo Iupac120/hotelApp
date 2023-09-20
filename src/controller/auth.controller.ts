@@ -1,13 +1,13 @@
 import {NextFunction, Request,Response} from 'express';
  import { omit } from 'lodash';
- import { createUser, createUserPassword, createUserResetPassword, loginUser, resendVerifyUserOtp, verifyUserOtp } from '../service/user.service';
- import logger from '../utils/logger';
- import { createUserInput } from '../schema/user.schema';
+ import { createUser, createUserPassword, createUserResetPassword, loginUser, resendVerifyUserOtp, verifyUserOtp } from '../service/user.service.js';
+ //import logger from '../utils/logger.js';
+ import { createUserInput } from '../schema/user.schema.js';
  import config from "config";
- import { signJwt } from '../utils/jwt.utils';
-import pool from '../utils/connect';
-import { getUserById } from '../queries/user.queries';
-import { NotFoundError } from '../errors/error.handler';
+ import { signJwt } from '../utils/jwt.utils.js';
+import pool from '../utils/connect.js';
+import { getUserById } from '../queries/user.queries.js';
+import { NotFoundError } from '../errors/error.handler.js';
 
  export async function createUserHandler(req:Request<{},{},createUserInput["body"]>,res:Response){
          const user =  await createUser(req.body);//call service

@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { createRoomNumberService, createRoomService, deleteRoomNumberService, deleteRoomService, getAllRoomsNumberService, getAllRoomsService, getSingleRoomNumberService, getSingleRoomService, updateRoomNumberService, updateRoomService } from "../service/room.service";
+import { createRoomNumberService, createRoomService, deleteRoomNumberService, deleteRoomService, getAllRoomsNumberService, getAllRoomsService, getSingleRoomNumberService, getSingleRoomService, updateRoomNumberService, updateRoomService } from "../service/room.service.js";
 //import { createHotelInput, getHotelInput } from "../schema/hotel.schema";
 
 //Room number controller

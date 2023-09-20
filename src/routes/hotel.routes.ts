@@ -1,9 +1,9 @@
 import {Router} from "express";
-import { createHotel, deleteHotel, getAllHotel, getHotel, updateHotel } from "../controller/hotel.controller";
-import { trycatchHandler } from "../utils/trycatch.handler";
-import validate from "../middleware/validateResources";
-import { createHotelSchema, getHotelSchema } from "../schema/hotel.schema";
-import { deserializeUser, verifyAdmin, verifyUser } from "../middleware/deserializeUser";
+import { createHotel, deleteHotel, getAllHotel, getHotel, updateHotel } from "../controller/hotel.controller.js";
+import { trycatchHandler } from "../utils/trycatch.handler.js";
+import validate from "../middleware/validateResources.js";
+import { createHotelSchema, getHotelSchema } from "../schema/hotel.schema.js";
+import { deserializeUser, verifyAdmin, verifyUser } from "../middleware/deserializeUser.js";
 
 const router = Router()
     //hotels routes

@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { deleteUserService, getAllUsersService, getSingleUserService, updateUserService } from "../service/user.service";
+import { deleteUserService, getAllUsersService, getSingleUserService, updateUserService } from "../service/user.service.js";
 
 
 

@@ -4,28 +4,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createResetOtpHandler = exports.verifyUserOtpHandler = exports.getResetPasswordHandler = exports.createResetPasswordHandler = exports.createPasswordHandler = exports.getPasswordHandler = exports.logout = exports.loginUserHandler = exports.createUserHandler = void 0;
-const user_service_1 = require("../service/user.service");
+const user_service_js_1 = require("../service/user.service.js");
 const config_1 = __importDefault(require("config"));
-const jwt_utils_1 = require("../utils/jwt.utils");
+const jwt_utils_js_1 = require("../utils/jwt.utils.js");
 async function createUserHandler(req, res) {
-    const user = await (0, user_service_1.createUser)(req.body); //call service
+    const user = await (0, user_service_js_1.createUser)(req.body); //call service
     //return res.send(omit(user,"password"));//omit the user to json object
     return res.status(201).json(`Sign up otp has been sent to your email:${user.email}`);
 }
 exports.createUserHandler = createUserHandler;
 //login controller
 async function loginUserHandler(req, res, next) {
-    const user = await (0, user_service_1.loginUser)(req.body);
+    const user = await (0, user_service_js_1.loginUser)(req.body);
     const userAgent = req.get("user-agent") || "";
     //create an acess token
     console.log("user", user);
     console.log("agent", userAgent);
-    const accessToken = (0, jwt_utils_1.signJwt)({ id: user.user_id, isAdmin: user.is_admin, userAgent }, {
+    const accessToken = (0, jwt_utils_js_1.signJwt)({ id: user.user_id, isAdmin: user.is_admin, userAgent }, {
         expiresIn: config_1.default.get("accessTokenTtl")
     });
     console.log("one");
     //create a refresh token
-    const refreshToken = (0, jwt_utils_1.signJwt)({ id: user.user_id, isAdmin: user.is_admin, userAgent }, {
+    const refreshToken = (0, jwt_utils_js_1.signJwt)({ id: user.user_id, isAdmin: user.is_admin, userAgent }, {
         expiresIn: config_1.default.get("refreshTokenTtl")
     });
     console.log("two");
@@ -67,14 +67,14 @@ async function getPasswordHandler(req, res) {
 }
 exports.getPasswordHandler = getPasswordHandler;
 async function createPasswordHandler(req, res) {
-    await (0, user_service_1.createUserPassword)(req.body);
+    await (0, user_service_js_1.createUserPassword)(req.body);
     return res.status(201).json({ message: `Password reset link send to your ${req.body.email}` });
 }
 exports.createPasswordHandler = createPasswordHandler;
 async function createResetPasswordHandler(req, res) {
     const userId = Number(req.params.user_id);
     const token = req.params.token;
-    await (0, user_service_1.createUserResetPassword)(req.body, userId, token);
+    await (0, user_service_js_1.createUserResetPassword)(req.body, userId, token);
     return res.status(201).json({ message: "Password reset" });
 }
 exports.createResetPasswordHandler = createResetPasswordHandler;
@@ -86,13 +86,13 @@ exports.getResetPasswordHandler = getResetPasswordHandler;
 async function verifyUserOtpHandler(req, res) {
     const input = req.body.otp;
     const otpEmail = req.body.email;
-    await (0, user_service_1.verifyUserOtp)(input, otpEmail);
+    await (0, user_service_js_1.verifyUserOtp)(input, otpEmail);
     return res.status(201).json({ message: "Email verification success" });
 }
 exports.verifyUserOtpHandler = verifyUserOtpHandler;
 async function createResetOtpHandler(req, res) {
     const input = req.body.email;
-    const user = await (0, user_service_1.resendVerifyUserOtp)(input);
+    const user = await (0, user_service_js_1.resendVerifyUserOtp)(input);
     res.status(201).json({ message: `A new otp has been sent to your email:${user.email}` });
 }
 exports.createResetOtpHandler = createResetOtpHandler;

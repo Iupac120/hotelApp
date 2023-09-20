@@ -1,6 +1,6 @@
 import { Request,Response, Router } from "express";
 import passport from "passport"
-import { isLoggedin } from "../controller/passport.controller";
+import { isLoggedin } from "../controller/passport.controller.js";
 const router = Router()
 
 router.get("/login/google", passport.authenticate('google',{scope:['profile email']}))

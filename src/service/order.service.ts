@@ -1,9 +1,9 @@
 
-import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
-import { ProductInput } from "../models/product.model";
-import { deleteOrderQuery, findAllOrderQuery, findOrderIdQuery, findOrderQuery, updateOrderQuery } from "../queries/order.queries";
-import { addProductQuery, checkUserQuery, deleteProductQuery, findAllProductQuery, findProductIdQuery, findProductQuery, updateProductQuery } from "../queries/product.queries";
-import pool from "../utils/connect";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler.js";
+import { ProductInput } from "../models/product.model.js";
+import { deleteOrderQuery, findAllOrderQuery, findOrderIdQuery, findOrderQuery, updateOrderQuery } from "../queries/order.queries.js";
+import { addProductQuery, checkUserQuery, deleteProductQuery, findAllProductQuery, findProductIdQuery, findProductQuery, updateProductQuery } from "../queries/product.queries.js";
+import pool from "../utils/connect.js";
 
 // export async function createOrder(){
 //     const getOrder = await pool.query()

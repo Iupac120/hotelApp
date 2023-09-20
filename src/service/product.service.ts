@@ -23,10 +23,10 @@
 //     return productModel.deleteOne(query)
 // }
 
-import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler";
-import { ProductInput } from "../models/product.model";
-import { addProductQuery, checkUserQuery, deleteProductQuery, findAllProductQuery, findProductIdQuery, findProductQuery, updateProductQuery } from "../queries/product.queries";
-import pool from "../utils/connect";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../errors/error.handler.js";
+import { ProductInput } from "../models/product.model.js";
+import { addProductQuery, checkUserQuery, deleteProductQuery, findAllProductQuery, findProductIdQuery, findProductQuery, updateProductQuery } from "../queries/product.queries.js";
+import pool from "../utils/connect.js";
 
 export async function createProduct (input:ProductInput,userId:string) {
     const adminExist = await pool.query(checkUserQuery,[userId])

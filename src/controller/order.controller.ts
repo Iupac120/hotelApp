@@ -1,17 +1,17 @@
 import {Request,Response} from 'express'
-import { CreateProductInput, DeleteProductInput, GetProductInput, UpdateProductInput } from '../schema/product.schema';
-import { createProduct, deleteProduct, findAllProduct, findProduct, updateProduct } from "../service/product.service"
+import { CreateProductInput, DeleteProductInput, GetProductInput, UpdateProductInput } from '../schema/product.schema.js';
+import { createProduct, deleteProduct, findAllProduct, findProduct, updateProduct } from "../service/product.service.js"
 import { NotBeforeError } from 'jsonwebtoken';
-import { NotFoundError, UnAuthorizedError } from '../errors/error.handler';
+import { NotFoundError, UnAuthorizedError } from '../errors/error.handler.js';
 import config from "config"
 import dotenv from 'dotenv';
-import Stripe from 'stripe';
-import pool from '../utils/connect';
-import { insertOrderQuery } from '../queries/order.queries';
+import Stripe from "stripe";
+import pool from '../utils/connect.js';
+import { insertOrderQuery } from '../queries/order.queries.js';
 dotenv.config()
 import {Session} from "express-session";
-import { CartItem } from '../models/session.model';
-import { deleteOrder, findAllOrder, findOrder, updateOrder } from '../service/order.service';
+import { CartItem } from '../models/session.model.js';
+import { deleteOrder, findAllOrder, findOrder, updateOrder } from '../service/order.service.js';
 
 interface CustomSession extends Session {
   cart?: CartItem[]; // Explicitly define it as an array of CartItem

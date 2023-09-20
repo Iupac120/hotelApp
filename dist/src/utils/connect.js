@@ -1,11 +1,11 @@
 "use strict";
+//import mongoose from "mongoose";
+//import config from 'config';
+//import logger from "./logger.js"
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//import mongoose from "mongoose";
-//import config from 'config';
-const logger_1 = __importDefault(require("./logger"));
 // async function connect(){
 //     const dbUri = config.get<string>('dbUri');
 //     try {
@@ -16,9 +16,10 @@ const logger_1 = __importDefault(require("./logger"));
 //         process.exit(1)  
 //     }
 // }
-const pg_1 = require("pg");
+const pg_1 = __importDefault(require("pg"));
+const { Pool } = pg_1.default;
 const config_1 = __importDefault(require("config"));
-const pool = new pg_1.Pool({
+const pool = new Pool({
     user: config_1.default.get("pguser"),
     password: config_1.default.get("pgpassword"),
     host: config_1.default.get("pghost"),
@@ -27,10 +28,12 @@ const pool = new pg_1.Pool({
     //connectionString:config.get<string>("conectionString")
 });
 if (pool) {
-    logger_1.default.info('connected to postgres db');
+    //logger.info('connected to postgres db')
+    console.log('connected to postgres db');
 }
 else {
-    logger_1.default.error('could not connected to db');
+    //logger.error('could not connected to db')
+    console.error('could not connected to db');
     //process.exit(1)  
 }
 exports.default = pool;

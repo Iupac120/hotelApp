@@ -1,8 +1,8 @@
 
 import { Request, Response } from "express";
-import { CartItem } from "../models/session.model";
+import { CartItem } from "../models/session.model.js";
 import {Session} from "express-session";
-import { calculateCartTotal } from "../service/session.service";
+import { calculateCartTotal } from "../service/session.service.js";
 
 interface CustomSession extends Session {
   cart?: CartItem[]; // Explicitly define it as an array of CartItem

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addToCartHandler = exports.removeFromCartHandler = exports.CartTotalHandler = void 0;
-const session_service_1 = require("../service/session.service");
+const session_service_js_1 = require("../service/session.service.js");
 async function CartTotalHandler(req, res) {
     const cart = req.session.cart || [];
-    const cartTotal = await (0, session_service_1.calculateCartTotal)(cart);
+    const cartTotal = await (0, session_service_js_1.calculateCartTotal)(cart);
     console.log("cart", cartTotal);
     return res.status(200).json(cartTotal);
 }

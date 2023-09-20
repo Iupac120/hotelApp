@@ -1,6 +1,6 @@
 //import mongoose from "mongoose";
 //import config from 'config';
-import logger from "./logger"
+//import logger from "./logger.js"
 
 // async function connect(){
 //     const dbUri = config.get<string>('dbUri');
@@ -13,7 +13,8 @@ import logger from "./logger"
 //     }
 // }
 
-import {Pool} from "pg";
+import pkg from "pg";
+const {Pool} = pkg;
 import config from "config"
 
 
@@ -27,9 +28,11 @@ const pool = new Pool({
             //connectionString:config.get<string>("conectionString")
         })  
 if (pool){
-    logger.info('connected to postgres db')
+    //logger.info('connected to postgres db')
+    console.log('connected to postgres db')
 }else{
-    logger.error('could not connected to db')
+    //logger.error('could not connected to db')
+    console.error('could not connected to db')
     //process.exit(1)  
 }
 

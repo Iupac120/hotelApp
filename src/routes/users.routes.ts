@@ -1,13 +1,13 @@
 import express from "express";
 const router = express.Router()
 import {Express,Request,Response} from 'express';
-import {/*createUserHandler,*/  deleteUser, getAllUsers, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller";
-import validateResource from '../middleware/validateResources';
-import { createUserSchema } from '../schema/user.schema';
-import { createSessionSchema } from '../schema/session.schema';
-import requireUser from '../middleware/requireUser';
-import { createProductHandler, deleteProductHandler, getProductHandler, updateProductHandler } from '../controller/product.controller';
-import { createProductSchema, deleteProductSchema, getProductSchema, updateProductSchema } from '../schema/product.schema';
+import {/*createUserHandler,*/  deleteUser, getAllUsers, getUser, /*getUserHandler,*/ updateUser} from "../controller/user.controller.js";
+import validateResource from '../middleware/validateResources.js';
+import { createUserSchema } from '../schema/user.schema.js';
+import { createSessionSchema } from '../schema/session.schema.js';
+import requireUser from '../middleware/requireUser.js';
+import { createProductHandler, deleteProductHandler, getProductHandler, updateProductHandler } from '../controller/product.controller.js';
+import { createProductSchema, deleteProductSchema, getProductSchema, updateProductSchema } from '../schema/product.schema.js';
 
 
 

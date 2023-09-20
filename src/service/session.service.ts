@@ -1,12 +1,12 @@
 
 //import sessionModel,{SessionDocument} from '../models/session.model';
-import { verifyJwt } from '../utils/jwt.utils';
+import { verifyJwt } from '../utils/jwt.utils.js';
 import {Request,Response} from "express"
 import { get } from 'lodash';
-import pool from '../utils/connect';
+import pool from '../utils/connect.js';
 //import { findUser } from './user.service';
 import config from "config"
-import { signJwt } from '../utils/jwt.utils';
+import { signJwt } from '../utils/jwt.utils.js';
 
 // export async function createSession (userId:string,userAgent:string){
 //     try {
@@ -39,10 +39,10 @@ import { signJwt } from '../utils/jwt.utils';
 //     return accesToken
 // }
 
-import {Cart, CartItem, CartTotal} from "../models/session.model"
-import { UnAuthorizedError } from '../errors/error.handler';
-//import { findSession } from '../queries/session.queries';
-import { findUserSession } from '../queries/auth.queries';
+import {Cart, CartItem, CartTotal} from "../models/session.model.js"
+import { UnAuthorizedError } from '../errors/error.handler.js';
+//import { findSession } from '../queries/session.queries.js';
+import { findUserSession } from '../queries/auth.queries.js';
 
 export async function calculateCartTotal(cart: Cart) {
     let totalQuantity = 0;

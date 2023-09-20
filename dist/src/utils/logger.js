@@ -1,16 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+// import * as pino from 'pino'
+// import pinoPretty from 'pino-pretty'
+// import dayjs from 'dayjs'
 Object.defineProperty(exports, "__esModule", { value: true });
-const pino_1 = __importDefault(require("pino"));
-const pino_pretty_1 = __importDefault(require("pino-pretty"));
-const dayjs_1 = __importDefault(require("dayjs"));
-const log = (0, pino_1.default)({
-    prettifier: pino_pretty_1.default,
-    base: {
-        pid: false
-    },
-    timestamp: () => `,"time":"${(0, dayjs_1.default)().format()}"`
-});
-exports.default = log;
+// const log: pino.Logger = pino({
+//     prettifier:pinoPretty,
+//     base:{
+//         pid:false
+//     },
+//     timestamp:() => `,"time":"${dayjs().format()}"`
+// })
+// export default log

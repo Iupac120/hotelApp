@@ -1,10 +1,11 @@
 import {Request,Response,NextFunction} from "express";
-import { get } from "lodash";//to get a property that your not certain it exists
-import { verifyJwt } from "../utils/jwt.utils";
+import getLodash from "lodash";//to get a property that your not certain it exists
+const { get } = getLodash;//to get a property that your not certain it exists
+import { verifyJwt } from "../utils/jwt.utils.js";
 import config from "config";
-import { reIssueAccessToken } from "../service/session.service";
-import { createCustomError } from "../errors/authentic.error";
-import { UnAuthorizedError } from "../errors/error.handler";
+import { reIssueAccessToken } from "../service/session.service.js";
+import { createCustomError } from "../errors/authentic.error.js";
+import { UnAuthorizedError } from "../errors/error.handler.js";
 import { Cookie } from "express-session";
 
 export async function deserializeUser (req:Request,res:Response,next:NextFunction) {

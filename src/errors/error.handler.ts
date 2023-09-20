@@ -1,6 +1,6 @@
 import { Request,Response,NextFunction } from "express";
-import { CustomError } from "./authentic.error";
-import { string } from "zod";
+import { CustomError } from "./authentic.error.js";
+//import { string } from "zod";
 export function errorHandler (err:any,req:Request,res:Response,next:NextFunction){
     if(err instanceof CustomError){
         return res.status(err.status).json({

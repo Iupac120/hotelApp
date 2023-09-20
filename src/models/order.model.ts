@@ -1,4 +1,4 @@
-import { CartItem } from "./session.model"
+import { CartItem } from "./session.model.js"
 
 export interface OrderDocument {
     user_id:number

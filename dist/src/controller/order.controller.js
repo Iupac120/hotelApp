@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOrderHandler = exports.updateOrderHandler = exports.getOrderHandler = exports.getAllOrderHandler = exports.paymentCheckout = exports.checkout = void 0;
-const error_handler_1 = require("../errors/error.handler");
+const error_handler_js_1 = require("../errors/error.handler.js");
 const config_1 = __importDefault(require("config"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const stripe_1 = __importDefault(require("stripe"));
-const connect_1 = __importDefault(require("../utils/connect"));
-const order_queries_1 = require("../queries/order.queries");
+const connect_js_1 = __importDefault(require("../utils/connect.js"));
+const order_queries_js_1 = require("../queries/order.queries.js");
 dotenv_1.default.config();
-const order_service_1 = require("../service/order.service");
+const order_service_js_1 = require("../service/order.service.js");
 // Create a Stripe instance
 const stripe = new stripe_1.default(config_1.default.get("stripe"), {
     apiVersion: '2023-08-16', // Use the latest API version
@@ -20,7 +20,7 @@ const stripe = new stripe_1.default(config_1.default.get("stripe"), {
 async function checkout(req, res) {
     try {
         if (!req.session.cart) {
-            return error_handler_1.UnAuthorizedError;
+            return error_handler_js_1.UnAuthorizedError;
         }
         const cart = req.session.cart || [];
         res.status(201).json({ total: cart });
@@ -36,7 +36,7 @@ async function paymentCheckout(req, res) {
     let order_id;
     try {
         // Insert order into PostgreSQL and retrieve the generated order_id
-        const { rows } = await connect_1.default.query(order_queries_1.insertOrderQuery, [email]);
+        const { rows } = await connect_js_1.default.query(order_queries_js_1.insertOrderQuery, [email]);
         order_id = rows[0].order_id;
         // Create a Stripe payment intent
         const paymentIntent = await stripe.paymentIntents.create({
@@ -98,9 +98,9 @@ exports.paymentCheckout = paymentCheckout;
 //     }
 // )
 async function getAllOrderHandler(req, res) {
-    const order = await (0, order_service_1.findAllOrder)();
+    const order = await (0, order_service_js_1.findAllOrder)();
     if (!order) {
-        return new error_handler_1.NotFoundError("order not found");
+        return new error_handler_js_1.NotFoundError("order not found");
     }
     return res.send(order);
 }
@@ -108,9 +108,9 @@ exports.getAllOrderHandler = getAllOrderHandler;
 async function getOrderHandler(req, res) {
     const orderId = Number(req.params.orderId);
     const body = req.body;
-    const order = await (0, order_service_1.findOrder)(orderId, body);
+    const order = await (0, order_service_js_1.findOrder)(orderId, body);
     if (!order) {
-        return new error_handler_1.NotFoundError("Order not found");
+        return new error_handler_js_1.NotFoundError("Order not found");
     }
     return res.send(order);
 }
@@ -119,9 +119,9 @@ async function updateOrderHandler(req, res) {
     const userId = Number(res.locals.user._id);
     const orderId = Number(req.params.orderId);
     const body = req.body;
-    const order = await (0, order_service_1.updateOrder)(userId, orderId, body);
+    const order = await (0, order_service_js_1.updateOrder)(userId, orderId, body);
     if (!order) {
-        return new error_handler_1.NotFoundError("Order not found");
+        return new error_handler_js_1.NotFoundError("Order not found");
     }
     return res.send(order);
 }
@@ -129,9 +129,9 @@ exports.updateOrderHandler = updateOrderHandler;
 async function deleteOrderHandler(req, res) {
     const userId = Number(res.locals.user._id);
     const orderId = Number(req.params.orderId);
-    const order = await (0, order_service_1.deleteOrder)(userId, orderId);
+    const order = await (0, order_service_js_1.deleteOrder)(userId, orderId);
     if (!order)
-        return new error_handler_1.NotFoundError("Order not found");
+        return new error_handler_js_1.NotFoundError("Order not found");
     return res.send(order);
 }
 exports.deleteOrderHandler = deleteOrderHandler;
